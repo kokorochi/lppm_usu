@@ -12,7 +12,7 @@
                 <ol class="breadcrumb">
                     <li>
                         <i class="fa fa-home"></i>
-                        <a href="{{url('dashboard/index')}}">Beranda</a>
+                        <a href="{{url('/')}}">Beranda</a>
                     </li>
                 </ol>
             </div><!-- /.breadcrumb-wrapper -->

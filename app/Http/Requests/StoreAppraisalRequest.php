@@ -4,8 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreAppraisalRequest extends FormRequest
-{
+class StoreAppraisalRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -30,9 +29,20 @@ class StoreAppraisalRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'name.required'      => 'Nama aspek penilaian harus diisi',
+            'aspect.*.required'  => 'Deskripsi aspek penilaian harus diisi',
+            'quality.*.required' => 'Bobot harus diisi',
+            'quality.*.integer'  => 'Bobot harus merupakan angka',
+        ];
+    }
+
     protected function getValidatorInstance()
     {
-        return parent::getValidatorInstance()->after(function($validator){
+        return parent::getValidatorInstance()->after(function ($validator)
+        {
             // Call the after method of the FormRequest (see below)
             $this->after($validator);
         });
@@ -41,26 +51,20 @@ class StoreAppraisalRequest extends FormRequest
 
     public function after($validator)
     {
-        if (!$this->checkTotalQuality()) {
+        if (! $this->checkTotalQuality())
+        {
             $validator->errors()->add('countQuality', 'Total bobot harus bernilai = 100');
         }
-    }
-
-    public function messages()
-    {
-        return [
-            'aspect.*.required' => 'The aspect description field is required',
-            'quality.*.required' => 'The quality field is required',
-            'quality.*.integer' => 'The quality must be a number',
-        ];
     }
 
     private function checkTotalQuality()
     {
         $countQuality = 0;
-        foreach ($this->input('quality') as $quality) {
+        foreach ($this->input('quality') as $quality)
+        {
             $countQuality += $quality;
         }
+
         return $countQuality === 100;
     }
 }

@@ -23,20 +23,20 @@ class StoreAnnounceRequest extends FormRequest {
     public function rules()
     {
         return [
-            'title'       => 'required|min:20',
-            'description' => 'required|min:100',
-            'image_name'  => 'image'
+            'title'      => 'required|min:20',
+            'content'    => 'required|min:100',
+            'image_name' => 'image'
         ];
     }
 
     public function messages()
     {
         return [
-            'title.required'       => 'Judul Pengumuman harus diisi',
-            'title.min'            => 'Judul Pengumuman minimal 20 karakter',
-            'description.required' => 'Konten pengumuman harus diisi',
-            'description.min'      => 'Konten pengumuman minimal 100 karakter',
-            'image_name.image'     => 'Gambar Pengumuman harus dalam bentuk JPG/PNG',
+            'title.required'   => 'Judul Pengumuman harus diisi',
+            'title.min'        => 'Judul Pengumuman minimal 20 karakter',
+            'content.required' => 'Konten pengumuman harus diisi',
+            'content.min'      => 'Konten pengumuman minimal 100 karakter',
+            'image_name.image' => 'Gambar Pengumuman harus dalam bentuk JPG/PNG',
         ];
     }
 }

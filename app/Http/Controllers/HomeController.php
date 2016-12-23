@@ -21,18 +21,8 @@ class HomeController extends BlankonController
         array_push($this->css['pages'], 'global/plugins/bower_components/dropzone/downloads/css/dropzone.css');
         array_push($this->css['pages'], 'global/plugins/bower_components/jquery.gritter/css/jquery.gritter.css');
 
-//        array_push($this->js['plugins'], 'global/plugins/bower_components/bootstrap-session-timeout/dist/bootstrap-session-timeout.min.js');
-//        array_push($this->js['plugins'], 'global/plugins/bower_components/flot/jquery.flot.js');
-//        array_push($this->js['plugins'], 'global/plugins/bower_components/flot/jquery.flot.spline.min.js');
-//        array_push($this->js['plugins'], 'global/plugins/bower_components/flot/jquery.flot.categories.js');
-//        array_push($this->js['plugins'], 'global/plugins/bower_components/flot/jquery.flot.tooltip.min.js');
-//        array_push($this->js['plugins'], 'global/plugins/bower_components/flot/jquery.flot.resize.js');
-//        array_push($this->js['plugins'], 'global/plugins/bower_components/flot/jquery.flot.pie.js');
-//        array_push($this->js['plugins'], 'global/plugins/bower_components/dropzone/downloads/dropzone.min.js');
-//        array_push($this->js['plugins'], 'global/plugins/bower_components/jquery.gritter/js/jquery.gritter.min.js');
         array_push($this->js['plugins'], 'global/plugins/bower_components/masonry/dist/masonry.pkgd.min.js');
 
-//        array_push($this->js['scripts'], 'global/plugins/bower_components/masonry/dist/masonry.pkgd.min.js');
         array_push($this->js['scripts'], 'admin/js/pages/blankon.blog.js');
         array_push($this->js['scripts'], 'admin/js/customize.js');
 

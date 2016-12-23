@@ -22,7 +22,7 @@
                         {{$pageTitle}}
                         <i class="fa fa-angle-right"></i>
                     </li>
-                    <li class="active">Tambah</li>
+                    <li class="active">{{$upd_mode === 'create' ? 'Tambah' : 'Ubah'}}</li>
                 </ol>
             </div><!-- /.breadcrumb-wrapper -->
         </div><!-- /.header-content -->
@@ -34,7 +34,7 @@
                     <div class="panel rounded shadow">
                         <div class="panel-heading">
                             <div class="pull-left">
-                                <h3 class="panel-title">Tambah Jenis Sumber Dana</h3>
+                                <h3 class="panel-title">{{$upd_mode === 'create' ? 'Tambah' : 'Ubah'}} Jenis Sumber Dana</h3>
                             </div>
                             <div class="pull-right">
                                 <button class="btn btn-sm" data-action="collapse" data-container="body"
@@ -46,7 +46,7 @@
 
                         <div class="panel-body no-padding">
                             <form class="form-horizontal form-bordered"
-                                  action="{{$upd_mode === 'create' ? url($deleteUrl . '/create') : url($deleteUrl, $category_type->id) . '/edit'}}"
+                                  action="{{$form_action}}"
                                   method="POST">
                                 <div class="form-body">
 
@@ -76,7 +76,7 @@
                                             <a href="{{url($deleteUrl)}}"
                                                class="btn btn-teal btn-slideright">Kembali</a>
                                             <button type="submit" class="btn btn-success btn-slideright">
-                                                Simpan
+                                                {{$upd_mode === 'create' ? 'Tambah' : 'Ubah'}}
                                             </button>
                                         </div>
                                     </div>

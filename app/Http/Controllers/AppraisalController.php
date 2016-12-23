@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -27,13 +28,6 @@ class AppraisalController extends BlankonController {
         $this->middleware('isOperator');
 
         array_push($this->css['pages'], 'global/plugins/bower_components/fontawesome/css/font-awesome.min.css');
-        array_push($this->css['pages'], 'global/plugins/bower_components/animate.css/animate.min.css');
-        array_push($this->css['pages'], 'global/plugins/bower_components/bootstrap-wysihtml5/src/bootstrap-wysihtml5.css');
-        array_push($this->css['pages'], 'global/plugins/bower_components/summernote/dist/summernote.css');
-
-        array_push($this->js['plugins'], 'global/plugins/bower_components/bootstrap-wysihtml5/lib/js/wysihtml5-0.3.0.min.js');
-        array_push($this->js['plugins'], 'global/plugins/bower_components/bootstrap-wysihtml5/src/bootstrap-wysihtml5.js');
-        array_push($this->js['plugins'], 'global/plugins/bower_components/summernote/dist/summernote.min.js');
 
         array_push($this->js['scripts'], 'admin/js/pages/blankon.form.wysiwyg.js');
         array_push($this->js['scripts'], 'admin/js/customize.js');
@@ -55,15 +49,36 @@ class AppraisalController extends BlankonController {
 
     public function create()
     {
-        return view('appraisal.appraisal-create');
+        $appraisal = new Appraisal();
+        $appraisals_i = new Collection();
+        $appraisal_i = new Appraisal_i();
+        $appraisals_i->add($appraisal_i);
+        $upd_mode = 'create';
+        $form_action = url('appraisals/create');
+        return view('appraisal.appraisal-detail',compact(
+            'appraisal',
+            'appraisals_i',
+            'appraisal_i',
+            'upd_mode',
+            'form_action'
+        ));
     }
 
     public function edit($id)
     {
         $appraisal = Appraisal::find($id);
-        $appraisals_is = $appraisal->appraisal_i()->get();
+        $appraisals_i = $appraisal->appraisal_i()->get();
+        $appraisal_i = new Appraisal_i();
+        $upd_mode = 'edit';
+        $form_action = url($this->deleteUrl . '/' . $appraisal->id . '/edit');
 
-        return view('appraisal/appraisal-edit', compact('appraisal', 'appraisals_is'));
+        return view('appraisal/appraisal-detail', compact(
+            'appraisal',
+            'appraisals_i',
+            'appraisal_i',
+            'upd_mode',
+            'form_action'
+        ));
     }
 
     public function store(Requests\StoreAppraisalRequest $request)

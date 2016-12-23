@@ -43,8 +43,9 @@ class CategoryTypeController extends BlankonController {
     {
         $category_type = new Category_type();
         $upd_mode = 'create';
+        $form_action = url($this->deleteUrl . '/create');
 
-        return view('category-type.category-type-detail', compact('category_type', 'upd_mode'));
+        return view('category-type.category-type-detail', compact('category_type', 'upd_mode', 'form_action'));
     }
 
     public function store(Requests\StoreCategoryTypeRequest $request)
@@ -67,8 +68,9 @@ class CategoryTypeController extends BlankonController {
             return abort('404');
         }
         $upd_mode = 'edit';
+        $form_action = url($this->deleteUrl, $category_type->id) . '/edit';
 
-        return view('category-type.category-type-detail', compact('category_type', 'upd_mode'));
+        return view('category-type.category-type-detail', compact('category_type', 'upd_mode', 'form_action'));
     }
 
     public function update(Requests\StoreCategoryTypeRequest $request, $id)

@@ -65,14 +65,26 @@ class AnnouncesController extends BlankonController {
 
     public function create()
     {
-        return view('announce/announce-create', compact('announce'));
+        $announce = new Announce();
+        $form_action = url('announces/create');
+        $upd_mode = 'create';
+        return view('announce/announce-detail', compact(
+            'announce',
+            'form_action',
+            'upd_mode'
+        ));
     }
 
     public function edit($id)
     {
         $announce = Announce::find($id);
-
-        return view('announce/announce-edit', compact('announce'));
+        $form_action = url('announces/' . $announce->id . '/edit');
+        $upd_mode = 'edit';
+        return view('announce/announce-detail', compact(
+            'announce',
+            'form_action',
+            'upd_mode'
+        ));
     }
 
     public function showSingleList($id)
@@ -147,14 +159,10 @@ class AnnouncesController extends BlankonController {
         return redirect()->intended('/announces/');
     }
 
-    /**
-     * @param Requests\StoreAnnounceRequest $request
-     * @param $store
-     */
     private function setAnnounceFields(Requests\StoreAnnounceRequest $request, $store)
     {
         $store->title = $request->title;
-        $store->content = $request->description;
+        $store->content = $request->content;
     }
 
     private function setCSS404()

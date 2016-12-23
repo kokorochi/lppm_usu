@@ -38,7 +38,6 @@ class PeriodController extends BlankonController
         array_push($this->js['plugins'], 'global/plugins/bower_components/summernote/dist/summernote.min.js');
         array_push($this->js['plugins'], 'global/plugins/bower_components/bootstrap-datepicker-vitalets/js/bootstrap-datepicker.js');
 
-//        array_push($this->js['scripts'], 'admin/js/pages/blankon.form.wysiwyg.js');
         array_push($this->js['scripts'], 'admin/js/pages/blankon.form.advanced.js');
         array_push($this->js['scripts'], 'admin/js/pages/blankon.form.picker.js');
         array_push($this->js['scripts'], 'admin/js/customize.js');
@@ -73,7 +72,7 @@ class PeriodController extends BlankonController
     public function edit($id)
     {
         $period = Period::find($id);
-        $period_array = Period::find($id)->toArray();
+        $period_array = $period->toArray();
         $period->propose_begda = date('d-m-Y', strtotime($period->propose_begda));
         $period->propose_endda = date('d-m-Y', strtotime($period->propose_endda));
         $period->review_begda  = date('d-m-Y', strtotime($period->review_begda ));

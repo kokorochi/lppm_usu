@@ -1,5 +1,15 @@
 @extends('layouts.lay_admin')
 
+@php
+    if( $errors->has('image_name') ||
+        $errors->has('title') ||
+        $errors->has('content'))
+    {
+        $announce->title = old('title');
+        $announce->content = old('content');
+    }
+@endphp
+
 @section('content')
     <section id="page-content">
 
@@ -18,7 +28,7 @@
                         Pengumuman
                         <i class="fa fa-angle-right"></i>
                     </li>
-                    <li class="active">Tambah</li>
+                    <li class="active">{{$upd_mode === 'create' ? 'Tambah' : 'Ubah'}}</li>
                 </ol>
             </div><!-- /.breadcrumb-wrapper -->
         </div><!-- /.header-content -->
@@ -30,7 +40,7 @@
                     <div class="panel rounded shadow">
                         <div class="panel-heading">
                             <div class="pull-left">
-                                <h3 class="panel-title">Tambah Pengumuman</h3>
+                                <h3 class="panel-title">{{$upd_mode === 'create' ? 'Tambah' : 'Ubah'}} Pengumuman</h3>
                             </div>
                             <div class="pull-right">
                                 <button class="btn btn-sm" data-action="collapse" data-container="body"
@@ -41,10 +51,30 @@
                         </div><!-- /.panel-heading -->
 
                         <div class="panel-body no-padding">
-                            <form class="form-horizontal form-bordered" action="{{url('announces/create')}}"
+                            <form class="form-horizontal form-bordered" action="{{$form_action}}"
                                   enctype="multipart/form-data"
                                   method="POST">
                                 <div class="form-body">
+                                    @if($upd_mode === 'edit')
+                                        @if($announce->image_name !== null)
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4 col-md-3">Gambar Pengumuman</label>
+                                                <div class="col-sm-7">
+                                                    <img src="{{url('images/upload/announces', $announce->image_name)}}"
+                                                         class="announce-image mb-10" alt="">
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <label class="control-label col-sm-4 col-md-3">Hapus Gambar</label>
+                                                <div class="col-sm-7">
+                                                    <div class="ckbox ckbox-danger">
+                                                        <input name="delete_image" id="checkbox-danger2" type="checkbox"
+                                                               value="x">
+                                                        <label for="checkbox-danger2"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endif
                                     <div class="form-group">
                                         <div class="clearfix"></div>
                                         <label class="control-label col-sm-4 col-md-3">Unggah Gambar Pengumuman</label>
@@ -73,10 +103,11 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="title" class="col-sm-4 col-md-3 control-label">Judul Pengumuman</label>
+                                        <label for="title" class="col-sm-4 col-md-3 control-label">Judul
+                                            Pengumuman</label>
                                         <div class="col-sm-7">
                                             <input name="title" class="form-control input-sm" type="text"
-                                                   value="{{ old('title') }}">
+                                                   value="{{ $announce->title }}">
                                             @if($errors->has('title'))
                                                 <label class="error" for="title" style="display: inline-block;">
                                                     {{ $errors->first('title') }}
@@ -89,33 +120,32 @@
                                         <div class="inner-all">
                                             <div class="form-horizontal">
                                                 <div class="form-group">
-                                                    <textarea name="description" id="summernote-textarea" class="form-control" rows="10" placeholder="Konten pengumuman..."></textarea>
+                                                    <textarea name="content" id="summernote-textarea"
+                                                              class="form-control" rows="10"
+                                                              placeholder="Konten pengumuman...">
+                                                        {{$announce->content}}
+                                                    </textarea>
+                                                    @if($errors->has('content'))
+                                                        <label class="error" for="content"
+                                                               style="display: inline-block;">
+                                                            {{ $errors->first('content') }}
+                                                        </label>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    {{--<div class="form-group">--}}
-                                        {{--<label for="description" class="col-sm-4 col-md-3 control-label">Konten--}}
-                                            {{--Pengumuman</label>--}}
-                                        {{--<div class="col-sm-7">--}}
-                                            {{--<textarea name="description" class="form-control input-sm" rows="12"--}}
-                                                      {{--placeholder="Konten pengumuman...">{{ old('description') }}</textarea>--}}
-                                            {{--@if($errors->has('description'))--}}
-                                                {{--<label class="error" for="description" style="display: inline-block;">--}}
-                                                    {{--{{ $errors->first('description') }}--}}
-                                                {{--</label>--}}
-                                            {{--@endif--}}
-                                        {{--</div>--}}
-                                    {{--</div><!-- /.form-group -->--}}
-
                                     {{ csrf_field() }}
+                                    @if($upd_mode === 'edit')
+                                        <input type="hidden" name="_method" value="PUT">
+                                    @endif
 
                                     <div class="form-footer">
                                         <div class="col-sm-offset-3">
-                                            <a href="{{url('announces')}}"
+                                            <a href="{{url($deleteUrl)}}"
                                                class="btn btn-teal btn-slideright">Kembali</a>
-                                            <button type="submit" class="btn btn-success btn-slideright">Tambah</button>
+                                            <button type="submit" class="btn btn-success btn-slideright">{{$upd_mode === 'create' ? 'Tambah' : 'Ubah'}}</button>
                                         </div>
                                     </div>
                                 </div><!-- /.form-body -->
