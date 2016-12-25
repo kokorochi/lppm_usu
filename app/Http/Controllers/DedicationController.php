@@ -128,6 +128,7 @@ class DedicationController extends BlankonController {
                 'created_by'  => Auth::user()->nidn,
             ]);
         }
+        $flow_status = $dedication->propose()->first()->flowStatus()->orderBy('item', 'desc')->first();
 
         $propose_own = $propose->proposesOwn()->first();
         $periods = $propose->period()->get();
@@ -167,7 +168,7 @@ class DedicationController extends BlankonController {
         }
 
         $disable_final_amount = 'readonly';
-        $upd_mode = 'review';
+        $upd_mode = 'edit';
 
         return view('dedication.dedication-edit', compact(
             'dedication',
