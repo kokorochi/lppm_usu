@@ -1,0 +1,33 @@
+/* Create your style on here */
+.member-wrapper div.form-group:first-child {
+    border-top: 1px solid #DDD;
+}
+
+#login-error {
+    border-radius: 3px;
+    background-color: #E9573F;
+    color: #FFFFFF;
+    padding: 5px 10px;
+    margin-left: 35px;
+}
+
+.announce-image{
+    display: block;
+    max-width: 100%;
+    /*width: 750px;*/
+    /*margin: 0 auto;*/
+}
+
+.sign-body .form-group:first-child #password-confirm-error{
+    left: -230px;
+}
+
+.navbar-toolbar .navbar-right .navbar-profile > a .meta .avatar img{
+    width: auto;
+    max-height: 35px;
+}
+
+.sidebar-content img{
+    width: auto;
+    max-height: 50px;
+}
