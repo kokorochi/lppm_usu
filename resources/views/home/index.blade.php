@@ -35,7 +35,7 @@
                                             href="{{ url('announces/' . $announce->id) }}">{{$announce->title}}</a>
                                 </h4>
                                 <ul class="blog-meta">
-                                    <li>By: {{$announce->created_by_name}}</li>
+                                    <li>Oleh: {{$announce->created_by_name}}</li>
                                     <li>{{ date("d M Y", strtotime($announce->created_at)) }}</li>
                                 </ul>
                                 <div class="blog-summary">

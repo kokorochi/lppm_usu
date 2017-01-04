@@ -19,7 +19,7 @@ class CreateDedicationOutputRevisionsTable extends Migration
             $table->smallInteger('item', false, true);
             $table->text('revision_text');
             $table->string('created_by', 30);
-            $table->string('updated_by', 30);
+            $table->string('updated_by', 30)->nullable();
             $table->timestamps();
         });
     }
