@@ -23,8 +23,8 @@
         <!--/ END FAVICONS -->
 
         <!-- START @FONT STYLES -->
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700" rel="stylesheet">
-        <link href="http://fonts.googleapis.com/css?family=Oswald:700,400" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Oswald:700,400" rel="stylesheet">
         <!--/ END FONT STYLES -->
 
         <!-- START @GLOBAL MANDATORY STYLES -->

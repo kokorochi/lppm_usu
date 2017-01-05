@@ -15,7 +15,7 @@
             <div class="sign-header">
                 <div class="form-group">
                     <div class="sign-text">
-                        <span>Member Area</span>
+                        <span></span>
                     </div>
                 </div><!-- /.form-group -->
             </div><!-- /.sign-header -->

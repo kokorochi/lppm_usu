@@ -53,9 +53,9 @@
 
                             <div class="form-footer">
                                 <div class="col-sm-offset-4 col-md-offset-3">
-                                    <a href="{{url($deleteUrl)}}" class="btn btn-danger btn-slideright">Cancel</a>
-                                    <button name="reject" type="submit" class="btn btn-warning btn-slideright" value="x">Reject</button>
-                                    <button name="accept" type="submit" class="btn btn-success btn-slideright" value="x">Accept</button>
+                                    <a href="{{url($deleteUrl)}}" class="btn btn-teal btn-slideright">Kembali</a>
+                                    <button name="reject" type="submit" class="btn btn-warning btn-slideright" value="x">Tolak</button>
+                                    <button name="accept" type="submit" class="btn btn-success btn-slideright" value="x">Setuju</button>
                                 </div><!-- /.col-sm-offset-3 -->
                             </div><!-- /.form-footer -->
                         </div><!-- /.panel -->
