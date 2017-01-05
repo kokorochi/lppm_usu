@@ -35,10 +35,17 @@ class HomeController extends BlankonController
 
     public function index()
     {
-        $announces = Announce::orderBy('updated_at', 'DESC')->get();
+        $announces = Announce::orderBy('id', 'DESC')->paginate(4);
         foreach ($announces as $announce) {
+            $title_overlength = false;
+            $content_overlength = false;
+            if(strlen($announce->title) > 30) $title_overlength = true;
+            if(strlen($announce->content) > 200) $content_overlength = true;
+            $announce->title = substr($announce->title, 0, 30);
+            if($title_overlength) $announce->title = $announce->title . '...';
             $announce->content = strip_tags($announce->content);
             $announce->content = substr($announce->content, 0, 200);
+            if($content_overlength) $announce->content = $announce->content . '...';
         }
 
         foreach ($announces as $announce)
