@@ -24,6 +24,8 @@ class HomeController extends BlankonController
         array_push($this->js['plugins'], 'global/plugins/bower_components/masonry/dist/masonry.pkgd.min.js');
 
         array_push($this->js['scripts'], 'admin/js/pages/blankon.blog.js');
+        array_push($this->js['scripts'], 'admin/js/jquery.infinitescroll.js');
+        array_push($this->js['scripts'], 'admin/js/custom-infinitescroll.js');
         array_push($this->js['scripts'], 'admin/js/customize.js');
 
         View::share('css', $this->css);
