@@ -16,7 +16,6 @@ class Propose extends Model {
         'total_amount',
         'final_amount',
         'file_partner_contract',
-        'output_type',
         'time_period',
         'bank_account_name',
         'bank_account_no',
@@ -50,14 +49,14 @@ class Propose extends Model {
         return $this->hasMany(Dedication_reviewer::class);
     }
 
+    public function proposeOutputType()
+    {
+        return $this->hasMany(ProposeOutputType::class);
+    }
+
     public function flowStatus()
     {
         return $this->hasMany(FlowStatus::class);
-    }
-
-    public function outputType()
-    {
-        return $this->belongsTo(Output_type::class);
     }
 
     public function reviewPropose()

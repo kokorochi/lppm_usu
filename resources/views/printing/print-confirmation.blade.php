@@ -188,12 +188,14 @@
         <!-- End Dedication Partner Detail -->
 
         <!-- Output Type -->
-        <tr>
-            <td class="print-col-1">7.</td>
-            <td class="print-col-2">Luaran yang dihasilkan</td>
-            <td class="print-col-3">:</td>
-            <td class="print-col-4">{{$propose->outputType()->first()->output_name}}</td>
-        </tr>
+        @foreach($propose_output_types as $key => $propose_output_type)
+            <tr>
+                <td class="print-col-1">{{$key === 0 ? "7." : ""}}</td>
+                <td class="print-col-2">{{$key === 0 ? "Luaran yang dihasilkan" : ""}}</td>
+                <td class="print-col-3">{{$key === 0 ? ":" : ""}}</td>
+                <td class="print-col-4">{{"- " . $propose_output_type->outputType()->first()->output_name}}</td>
+            </tr>
+        @endforeach
         <!-- End Output Type -->
 
         <tr>

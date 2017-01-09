@@ -11,7 +11,6 @@ $errors->has('bank_account_no') || old('bank_account_no')
     @php
         $propose->faculty_code          = old('faculty_code');
         $propose->title                 = old('title');
-        $propose->output_type           = old('output_type');
         $propose->total_amount          = old('total_amount');
         $propose->time_period           = old('time_period');
         $propose->bank_account_name     = old('bank_account_name');
@@ -53,23 +52,13 @@ $errors->has('bank_account_no') || old('bank_account_no')
                     <div class="form-group">
                         <label for="title" class="col-sm-4 col-md-3 control-label">Judul Pengabdian</label>
                         <div class="col-sm-7">
-                            <input name="title" class="form-control input-sm" type="text" value="{{ $propose->title }}" {{$disabled}}>
+                            <input name="title" class="form-control input-sm" type="text"
+                                   value="{{ $propose->title }}" {{$disabled}}>
                             @if($errors->has('title'))
                                 <label class="error" for="title" style="display: inline-block;">
                                     {{ $errors->first('title') }}
                                 </label>
                             @endif
-                        </div>
-                    </div><!-- /.form-group -->
-
-                    <div class="form-group">
-                        <label for="output_type" class="col-sm-4 col-md-3 control-label">Luaran yang dihasilkan</label>
-                        <div class="col-sm-7">
-                            <select name="output_type" class="form-control input-sm" {{$disabled}}>
-                                @foreach($output_types as $output_type)
-                                    <option value="{{$output_type->id}}" {{$propose->output_type === $output_type->id ? 'selected' : null}}>{{$output_type->output_name}}</option>
-                                @endforeach
-                            </select>
                         </div>
                     </div><!-- /.form-group -->
 
@@ -103,7 +92,8 @@ $errors->has('bank_account_no') || old('bank_account_no')
                     </div><!-- /.form-group -->
 
                     <div class="form-group">
-                        <label for="student_involved" class="col-sm-4 col-md-3 control-label">Mahasiswa Yang Terlibat</label>
+                        <label for="student_involved" class="col-sm-4 col-md-3 control-label">Mahasiswa Yang
+                            Terlibat</label>
                         <div class="col-sm-7">
                             <input name="student_involved" class="form-control input-sm" type="text"
                                    maxlength="2" data-inputmask="'alias': 'decimal', 'rightAlign': false"
@@ -119,7 +109,8 @@ $errors->has('bank_account_no') || old('bank_account_no')
                     <div class="form-group">
                         <label for="address" class="col-sm-4 col-md-3 control-label">Alamat Kantor/Faks/Telepon</label>
                         <div class="col-sm-7">
-                            <input name="address" class="form-control input-sm" type="text" value="{{ $propose->address }}" {{$disabled}}>
+                            <input name="address" class="form-control input-sm" type="text"
+                                   value="{{ $propose->address }}" {{$disabled}}>
                             @if($errors->has('address'))
                                 <label class="error" for="address" style="display: inline-block;">
                                     {{ $errors->first('address') }}
@@ -129,7 +120,8 @@ $errors->has('bank_account_no') || old('bank_account_no')
                     </div><!-- /.form-group -->
 
                     <div class="form-group">
-                        <label for="bank_account_name" class="col-sm-4 col-md-3 control-label">Nama Pemilik Rekening Bank</label>
+                        <label for="bank_account_name" class="col-sm-4 col-md-3 control-label">Nama Pemilik Rekening
+                            Bank</label>
                         <div class="col-sm-7">
                             <input name="bank_account_name" class="form-control input-sm" type="text"
                                    value="{{ $propose->bank_account_name }}" {{$disabled}}>
@@ -142,7 +134,8 @@ $errors->has('bank_account_no') || old('bank_account_no')
                     </div><!-- /.form-group -->
 
                     <div class="form-group">
-                        <label for="bank_account_no" class="col-sm-4 col-md-3 control-label">Nomor Pemilik Rekening Bank</label>
+                        <label for="bank_account_no" class="col-sm-4 col-md-3 control-label">Nomor Pemilik Rekening
+                            Bank</label>
                         <div class="col-sm-7">
                             <input name="bank_account_no" class="form-control input-sm" type="text"
                                    value="{{ $propose->bank_account_no }}" {{$disabled}}>

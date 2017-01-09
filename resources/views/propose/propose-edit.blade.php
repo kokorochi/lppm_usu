@@ -34,6 +34,8 @@
 
             @include('form-input.propose-member')
 
+            @include('form-input.propose-detail-output')
+
             @include('form-input.propose-detail')
 
             <form class="" action="{{url('proposes', $propose->id) . '/edit'}}" method="POST"

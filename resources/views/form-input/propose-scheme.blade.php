@@ -44,7 +44,7 @@ $errors->has('period_id')           || old('period_id')
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-7">
                                 <div class="ckbox ckbox-primary">
-                                    <input name="is_own" id="checkbox-primary1" type="checkbox" value="x"
+                                    <input name="is_own" id="checkbox-primary1" type="checkbox" value="1"
                                             {{ $propose->is_own === '1' ? 'checked="checked"' : null }} {{$disabled}}>
                                     <label for="checkbox-primary1">Mandiri</label>
                                 </div>

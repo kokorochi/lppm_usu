@@ -35,9 +35,9 @@
 
                 @include('form-input.propose-member')
 
-                @include('form-input.propose-detail')
+                @include('form-input.propose-detail-output')
 
-                {{--@include('form-input.propose-upload')--}}
+                @include('form-input.propose-detail')
 
                 <div class="row">
                     <div class="col-md-12">

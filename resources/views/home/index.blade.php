@@ -59,5 +59,5 @@
     @include('layouts._footer-admin')
     <!--/ End footer content -->
     </section><!-- /#page-content -->
-@stop
+@endsection
 <!--/ END PAGE CONTENT -->

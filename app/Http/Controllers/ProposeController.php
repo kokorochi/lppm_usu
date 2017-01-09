@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ModelSDM\Lecturer;
+use App\ProposeOutputType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -94,10 +95,13 @@ class ProposeController extends BlankonController {
             $period = $periods[0];
         }
         $output_types = Output_type::all();
-
+        $output_types->add(new Output_type());
         $category_types = Category_type::all();
-
         $dedication_types = Dedication_type::all();
+        $propose_output_types = new Collection();
+        $propose_output_types->add(new ProposeOutputType());
+        $propose_output_types->add(new ProposeOutputType());
+        $propose_output_types->add(new ProposeOutputType());
 
         $dedication_partners = new Collection;
         $dedication_partner = new Dedication_partner;
@@ -126,6 +130,7 @@ class ProposeController extends BlankonController {
             'disable_upload',
             'dedication_partners',
             'dedication_partner',
+            'propose_output_types',
             'members',
             'member',
             'lecturer'
@@ -139,7 +144,7 @@ class ProposeController extends BlankonController {
         $flow_statuses = new FlowStatus();
 
         $proposes_own = new Propose_own();
-        if ($request->is_own === 'x')
+        if ($request->is_own === '1')
         {
             $proposes->is_own = '1';
             $proposes_own->years = $request['own-years'];
@@ -181,9 +186,21 @@ class ProposeController extends BlankonController {
             $members->add($member);
         }
 
+        $propose_output_types = new Collection();
+        $i = 1;
+        foreach ($request->output_type as $item)
+        {
+            if ($item !== '')
+            {
+                $propose_output_type = new ProposeOutputType();
+                $propose_output_type->item = $i++;
+                $propose_output_type->output_type_id = $item;
+                $propose_output_types->add($propose_output_type);
+            }
+        }
+
         $proposes->faculty_code = $request->faculty_code;
         $proposes->title = $request->title;
-        $proposes->output_type_id = $request->output_type;
         $proposes->total_amount = str_replace(',', '', $request->total_amount);
         $proposes->time_period = $request->time_period;
         $proposes->bank_account_name = $request->bank_account_name;
@@ -198,7 +215,7 @@ class ProposeController extends BlankonController {
         $flow_statuses->status_code = 'VA'; //Menunggu Verifikasi Anggota
         $flow_statuses->created_by = $proposes->created_by;
 
-        DB::transaction(function () use ($proposes, $proposes_own, $dedication_partners, $members, $flow_statuses, $request)
+        DB::transaction(function () use ($proposes, $proposes_own, $dedication_partners, $members, $flow_statuses, $propose_output_types, $request)
         {
             $proposes->save();
             if ($proposes->is_own === '1')
@@ -206,6 +223,7 @@ class ProposeController extends BlankonController {
                 $proposes->proposesOwn()->save($proposes_own);
             }
             $proposes->dedicationPartner()->saveMany($dedication_partners);
+            $proposes->proposeOutputType()->saveMany($propose_output_types);
             $proposes->member()->saveMany($members);
             $proposes->flowStatus()->save($flow_statuses);
 
@@ -345,6 +363,7 @@ class ProposeController extends BlankonController {
         $period = $propose->period()->first();
         $dedication_partners = $propose->dedicationPartner()->get();
         $dedication_partner = $propose->dedicationPartner()->first();
+        $propose_output_types = $propose->proposeOutputType()->get();
         $members = $propose->member()->get();
         foreach ($members as $member)
         {
@@ -391,6 +410,7 @@ class ProposeController extends BlankonController {
             'faculties',
             'disable_upload',
             'dedication_partners',
+            'propose_output_types',
             'dedication_partner',
             'members',
             'member',
@@ -405,11 +425,18 @@ class ProposeController extends BlankonController {
         if ($request->submit_button === 'print')
         {
             $propose = Propose::find($id);
+            if($propose === null)
+            {
+                $this->setCSS404();
+
+                return abort('404');
+            }
+            $propose_output_types = $propose->proposeOutputType()->get();
             $dedication_partners = $propose->dedicationPartner()->get();
             $lecturer = Lecturer::where('employee_card_serial_number', Auth::user()->nidn)->first();
             $lppm_head = Lecturer::where('employee_card_serial_number', '0001096202')->first();
 
-            if($request->sign_2 === 'secretary')
+            if ($request->sign_2 === 'secretary')
             {
                 $lppm_head = Lecturer::where('employee_card_serial_number', '0009016502')->first();
             }
@@ -579,6 +606,7 @@ class ProposeController extends BlankonController {
                 'propose',
                 'dedication_partners',
                 'lecturer',
+                'propose_output_types',
                 'members',
                 'today_date',
                 'lppm_head',
@@ -638,126 +666,6 @@ class ProposeController extends BlankonController {
 
             return redirect()->intended('/proposes');
         }
-    }
-
-    public function printConfirmation($id)
-    {
-        $propose = Propose::find($id);
-        $dedication_partners = $propose->dedicationPartner()->get();
-        $lecturer = Lecturer::where('employee_card_serial_number', Auth::user()->nidn)->first();
-        $lppm_head = Lecturer::where('employee_card_serial_number', '0001096202')->first();
-        $lppm_head->full_name = $lppm_head->front_degree . ' ' . $lppm_head->full_name . ', ' . $lppm_head->behind_degree;
-
-        switch ($propose->faculty_code)
-        {
-            case 'FK':
-                $dean = Lecturer::where('employee_card_serial_number', '0024056603')->first();
-                break;
-            case 'FH':
-                $dean = Lecturer::where('employee_card_serial_number', '0011055902')->first();
-                break;
-            case 'FP':
-                $dean = Lecturer::where('employee_card_serial_number', '0008085812')->first();
-                break;
-            case 'FT':
-                $dean = Lecturer::where('employee_card_serial_number', '0004016105')->first();
-                break;
-            case 'FE':
-                $dean = Lecturer::where('employee_card_serial_number', '0002065803')->first();
-                break;
-            case 'FKG':
-                $dean = Lecturer::where('employee_card_serial_number', '0014026503')->first();
-                break;
-            case 'FIB':
-                $dean = Lecturer::where('employee_card_serial_number', '0005086002')->first();
-                break;
-            case 'FMIPA':
-                $dean = Lecturer::where('employee_card_serial_number', '0023065803')->first();
-                break;
-            case 'FISIP':
-                $dean = Lecturer::where('employee_card_serial_number', '0030097401')->first();
-                break;
-            case 'FKM':
-                $dean = Lecturer::where('employee_card_serial_number', '0020036805')->first();
-                break;
-            case 'FF':
-                $dean = Lecturer::where('employee_card_serial_number', '0023075705')->first();
-                break;
-            case 'FPSI':
-                $dean = Lecturer::where('employee_card_serial_number', '0014127301')->first();
-                break;
-            case 'FKEP':
-                $dean = Lecturer::where('employee_card_serial_number', '0020077102')->first();
-                break;
-            case 'FIKTI':
-                $dean = Lecturer::where('employee_card_serial_number', '0017086108')->first();
-                break;
-            case 'FAHUTA':
-                $dean = Lecturer::where('employee_card_serial_number', '0016047101')->first();
-                break;
-        }
-        if (! ($dean->front_degree === null || $dean->front_degree === '' || $dean->front_degree === '-'))
-        {
-            $dean->full_name = $dean->front_degree . ' ' . $dean->full_name;
-        }
-        if (! ($dean->behind_degree === null || $dean->behind_degree === '' || $dean->behind_degree === '-'))
-        {
-            $dean->full_name = $dean->full_name . ', ' . $dean->behind_degree;
-        }
-
-        $members = $propose->member()->get();
-        $month = date('M', strtotime(Carbon::now()->toDateString()));
-        switch ($month)
-        {
-            case 'Jan':
-                $month = 'Januari';
-                break;
-            case 'Feb':
-                $month = 'Pebruari';
-                break;
-            case 'Mar':
-                $month = 'Maret';
-                break;
-            case 'Apr':
-                $month = 'April';
-                break;
-            case 'May':
-                $month = 'Mei';
-                break;
-            case 'Jun':
-                $month = 'Juni';
-                break;
-            case 'Jul':
-                $month = 'Juli';
-                break;
-            case 'Aug':
-                $month = 'Agustus';
-                break;
-            case 'Sep':
-                $month = 'September';
-                break;
-            case 'Oct':
-                $month = 'Oktober';
-                break;
-            case 'Nov':
-                $month = 'Nopember';
-                break;
-            case 'Dec':
-                $month = 'Desember';
-                break;
-        }
-        $today_date = date('d', strtotime(Carbon::now()->toDateString())) . ' ' .
-            $month . ' ' . date('Y', strtotime(Carbon::now()->toDateString()));
-
-        return view('printing.print-confirmation', compact(
-            'propose',
-            'dedication_partners',
-            'lecturer',
-            'members',
-            'today_date',
-            'lppm_head',
-            'dean'
-        ));
     }
 
     public function destroy($id)
