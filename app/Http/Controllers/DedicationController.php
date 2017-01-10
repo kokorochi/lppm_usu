@@ -319,45 +319,57 @@ class DedicationController extends BlankonController {
             return abort('404');
         }
         $propose = $dedication->propose()->first();
-        $output_code = $propose->outputType()->first()->output_code;
+        $propose_output_types = $propose->proposeOutputType()->get();
 
-        if ($output_code === 'JS')
+        $status_code = $propose->flowStatus()->orderBy('item', 'desc')->first()->status_code;
+
+
+        foreach ($propose_output_types as $propose_output_type)
         {
-            $dedication_output_services = $dedication->dedicationOutputService()->get();
-            if ($dedication_output_services->isEmpty())
+            $output_code = $propose_output_type->outputType()->first()->output_code;
+            if ($output_code === 'JS')
             {
-                $dedication_output_services = new Collection();
-                for ($i = 0; $i < 5; $i++)
+                $dedication_output_services = $dedication->dedicationOutputService()->get();
+                if ($dedication_output_services->isEmpty())
                 {
-                    $dedication_output_service = new DedicationOutputService();
-                    $dedication_output_services->add($dedication_output_service);
+                    $dedication_output_services = new Collection();
+                    for ($i = 0; $i < 5; $i++)
+                    {
+                        $dedication_output_service = new DedicationOutputService();
+                        $dedication_output_services->add($dedication_output_service);
+                    }
                 }
+            } elseif ($output_code === 'MT')
+            {
+                $dedication_output_methods = $dedication->dedicationOutputMethod()->get();
+                $dedication_output_method = $dedication->dedicationOutputMethod()->first();
+                if ($dedication_output_method === null) $dedication_output_method = new DedicationOutputMethod();
+            } elseif ($output_code === 'PB')
+            {
+                $dedication_output_product = $dedication->dedicationOutputProduct()->first();
+                if ($dedication_output_product === null) $dedication_output_product = new DedicationOutputProduct();
+            } elseif ($output_code === 'PT')
+            {
+                $dedication_output_patent = $dedication->dedicationOutputPatent()->first();
+                if ($dedication_output_patent === null) $dedication_output_patent = new DedicationOutputPatent();
+            } elseif ($output_code === 'BP')
+            {
+                $dedication_output_guidebook = $dedication->dedicationOutputGuidebook()->first();
+                if ($dedication_output_guidebook === null) $dedication_output_guidebook = new DedicationOutputGuidebook();
             }
-        } elseif ($output_code === 'MT')
-        {
-            $dedication_output_methods = $dedication->dedicationOutputMethod()->get();
-            $dedication_output_method = $dedication->dedicationOutputMethod()->first();
-            if ($dedication_output_method === null) $dedication_output_method = new DedicationOutputMethod();
-        } elseif ($output_code === 'PB')
-        {
-            $dedication_output_product = $dedication->dedicationOutputProduct()->first();
-            if ($dedication_output_product === null) $dedication_output_product = new DedicationOutputProduct();
-        } elseif ($output_code === 'PT')
-        {
-            $dedication_output_patent = $dedication->dedicationOutputPatent()->first();
-            if ($dedication_output_patent === null) $dedication_output_patent = new DedicationOutputPatent();
-        } elseif ($output_code === 'BP')
-        {
-            $dedication_output_guidebook = $dedication->dedicationOutputGuidebook()->first();
-            if ($dedication_output_guidebook === null) $dedication_output_guidebook = new DedicationOutputGuidebook();
         }
 
-        $upd_mode = '';
+        $dedication_output_revision = $dedication->dedicationOutputRevision()->orderBy('item', 'desc')->first();
+        if ($dedication_output_revision === null) $dedication_output_revision = new DedicationOutputRevision();
+
+        $upd_mode = 'output';
 
         return view('dedication.dedication-output', compact(
             'dedication',
             'propose',
-            'output_code',
+            'status_code',
+            'propose_output_types',
+            'dedication_output_revision',
             'dedication_output_services',
             'dedication_output_methods',
             'dedication_output_method',
@@ -403,7 +415,7 @@ class DedicationController extends BlankonController {
             $this->setFlowStatuses($dedication);
         });
 
-        return redirect()->intended('dedications');
+        return redirect()->intended('dedications/' . $id . '/output');
     }
 
     public function updateOutputMethod(Requests\StoreOutputMethodRequest $request, $id)
@@ -439,7 +451,7 @@ class DedicationController extends BlankonController {
             $this->setFlowStatuses($dedication);
         });
 
-        return redirect()->intended('dedications');
+        return redirect()->intended('dedications/' . $id . '/output');
     }
 
     public function updateOutputProduct(Requests\StoreOutputProductRequest $request, $id)
@@ -491,7 +503,7 @@ class DedicationController extends BlankonController {
             $this->setFlowStatuses($dedication);
         });
 
-        return redirect()->intended('dedications');
+        return redirect()->intended('dedications/' . $id . '/output');
     }
 
     public function updateOutputPatent(Requests\StoreOutputPatentRequest $request, $id)
@@ -527,7 +539,7 @@ class DedicationController extends BlankonController {
             $this->setFlowStatuses($dedication);
         });
 
-        return redirect()->intended('dedications');
+        return redirect()->intended('dedications/' . $id . '/output');
     }
 
     public function updateOutputGuidebook(Requests\StoreOutputGuidebookRequest $request, $id)
@@ -583,7 +595,7 @@ class DedicationController extends BlankonController {
             $this->setFlowStatuses($dedication);
         });
 
-        return redirect()->intended('dedications');
+        return redirect()->intended('dedications/' . $id . '/output');
     }
 
     public function getOutputFile($id, $type, $subtype = 0)
@@ -728,37 +740,43 @@ class DedicationController extends BlankonController {
             return abort('404');
         }
         $propose = $dedication->propose()->first();
-        $output_code = $propose->outputType()->first()->output_code;
+        $propose_output_types = $propose->proposeOutputType()->get();
+        
+        $status_code = $propose->flowStatus()->orderBy('item', 'desc')->first()->status_code;
 
-        if ($output_code === 'JS')
+        foreach ($propose_output_types as $propose_output_type)
         {
-            $dedication_output_services = $dedication->dedicationOutputService()->get();
-            if ($dedication_output_services->isEmpty())
+            $output_code = $propose_output_type->outputType()->first()->output_code;
+            if ($output_code === 'JS')
             {
-                $dedication_output_services = new Collection();
-                for ($i = 0; $i < 5; $i++)
+                $dedication_output_services = $dedication->dedicationOutputService()->get();
+                if ($dedication_output_services->isEmpty())
                 {
-                    $dedication_output_service = new DedicationOutputService();
-                    $dedication_output_services->add($dedication_output_service);
+                    $dedication_output_services = new Collection();
+                    for ($i = 0; $i < 5; $i++)
+                    {
+                        $dedication_output_service = new DedicationOutputService();
+                        $dedication_output_services->add($dedication_output_service);
+                    }
                 }
+            } elseif ($output_code === 'MT')
+            {
+                $dedication_output_methods = $dedication->dedicationOutputMethod()->get();
+                $dedication_output_method = $dedication->dedicationOutputMethod()->first();
+                if ($dedication_output_method === null) $dedication_output_method = new DedicationOutputMethod();
+            } elseif ($output_code === 'PB')
+            {
+                $dedication_output_product = $dedication->dedicationOutputProduct()->first();
+                if ($dedication_output_product === null) $dedication_output_product = new DedicationOutputProduct();
+            } elseif ($output_code === 'PT')
+            {
+                $dedication_output_patent = $dedication->dedicationOutputPatent()->first();
+                if ($dedication_output_patent === null) $dedication_output_patent = new DedicationOutputPatent();
+            } elseif ($output_code === 'BP')
+            {
+                $dedication_output_guidebook = $dedication->dedicationOutputGuidebook()->first();
+                if ($dedication_output_guidebook === null) $dedication_output_guidebook = new DedicationOutputGuidebook();
             }
-        } elseif ($output_code === 'MT')
-        {
-            $dedication_output_methods = $dedication->dedicationOutputMethod()->get();
-            $dedication_output_method = $dedication->dedicationOutputMethod()->first();
-            if ($dedication_output_method === null) $dedication_output_method = new DedicationOutputMethod();
-        } elseif ($output_code === 'PB')
-        {
-            $dedication_output_product = $dedication->dedicationOutputProduct()->first();
-            if ($dedication_output_product === null) $dedication_output_product = new DedicationOutputProduct();
-        } elseif ($output_code === 'PT')
-        {
-            $dedication_output_patent = $dedication->dedicationOutputPatent()->first();
-            if ($dedication_output_patent === null) $dedication_output_patent = new DedicationOutputPatent();
-        } elseif ($output_code === 'BP')
-        {
-            $dedication_output_guidebook = $dedication->dedicationOutputGuidebook()->first();
-            if ($dedication_output_guidebook === null) $dedication_output_guidebook = new DedicationOutputGuidebook();
         }
 
         $dedication_output_revision = $dedication->dedicationOutputRevision()->orderBy('item', 'desc')->first();
@@ -770,7 +788,8 @@ class DedicationController extends BlankonController {
         return view('dedication.dedication-output', compact(
             'dedication',
             'propose',
-            'output_code',
+            'status_code',
+            'propose_output_types',
             'dedication_output_services',
             'dedication_output_methods',
             'dedication_output_method',
@@ -842,7 +861,7 @@ class DedicationController extends BlankonController {
     private function setFlowStatuses($dedication)
     {
         $flow_status = $dedication->propose()->first()->flowStatus()->orderBy('item', 'desc')->first();
-        if ($flow_status->status_code === 'UL')
+        if ($flow_status->status_code === 'UL' || $flow_status->status_code === 'RL')
         {
             $dedication->propose()->first()->flowStatus()->create([
                 'item'        => $flow_status->item + 1,

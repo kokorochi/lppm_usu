@@ -182,6 +182,12 @@ class StoreProposeRequest extends FormRequest {
         {
             array_push($ret, 'Minimal 1 luaran yang dihasilkan harus diisi');
         }
+        $output_type_unique = $this->input('output_type');
+        $output_type_unique = array_unique($output_type_unique);
+        if (count($output_type_unique) !== (count($this->input('output_type'))))
+        {
+            array_push($ret, 'Luaran yang dipilih tidak boleh duplikasi');
+        }
 
         //Check Member NIDN with SIMSDM Lecturer Table
         foreach ($this->input('member_nidn') as $key => $member_nidn)

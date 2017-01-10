@@ -36,7 +36,6 @@ class AnnouncesController extends BlankonController {
         array_push($this->js['plugins'], 'global/plugins/bower_components/jasny-bootstrap-fileinput/js/jasny-bootstrap.fileinput.min.js');
 
         array_push($this->js['scripts'], 'admin/js/pages/blankon.form.wysiwyg.js');
-        array_push($this->js['scripts'], 'admin/js/pages/blankon.form.advanced.js');
         array_push($this->js['scripts'], 'admin/js/customize.js');
 
         View::share('css', $this->css);
@@ -56,7 +55,7 @@ class AnnouncesController extends BlankonController {
         {
             $announce->no = $i;
             $announce->title = substr($announce->title, 0, 40);
-            $announce->content = substr($announce->content, 0, 100);
+            $announce->content = substr(strip_tags($announce->content), 0, 100);
             $i = $i + 1;
         }
 
@@ -78,6 +77,12 @@ class AnnouncesController extends BlankonController {
     public function edit($id)
     {
         $announce = Announce::find($id);
+        if($announce === null)
+        {
+            $this->setCSS404();
+
+            return abort('404');
+        }
         $form_action = url('announces/' . $announce->id . '/edit');
         $upd_mode = 'edit';
         return view('announce/announce-detail', compact(
@@ -110,14 +115,14 @@ class AnnouncesController extends BlankonController {
         $store = new Announce;
         $this->setAnnounceFields($request, $store);
         $store->created_by = Auth::user()->nidn;
+        $store->save();
 
         if ($request->hasFile('image_name'))
         {
-            $store->image_name = md5($request->file('image_name')->getClientOriginalName() . Carbon::now()->toDateTimeString()) . '.' . $request->file('image_name')->extension();
+            $store->image_name = md5($request->file('image_name')->getClientOriginalName() . Carbon::now()->toDateTimeString() . $store->id) . '.' . $request->file('image_name')->extension();
             $path = public_path('images/upload/announces');
             $request->file('image_name')->move($path, $store->image_name);
         }
-        $store->save();
 
         return redirect()->intended('/announces/');
     }

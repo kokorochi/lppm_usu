@@ -58,7 +58,7 @@ $errors->has('sumErrors')
                     <div class="clearfix"></div>
                     <div class="form-footer">
                         <div class="col-sm-offset-4 col-md-offset-3">
-                            <a href="{{url($deleteUrl)}}" class="btn btn-teal btn-slideright">Kembali</a>
+                            <a href="{{url($deleteUrl . '/approve-list')}}" class="btn btn-teal btn-slideright">Kembali</a>
                             <button type="submit" class="btn btn-success btn-slideright">Simpan</button>
                         </div><!-- /.col-sm-offset-3 -->
                     </div><!-- /.form-footer -->

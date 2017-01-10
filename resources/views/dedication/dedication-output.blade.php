@@ -28,17 +28,25 @@
         <!-- Start body content -->
         <div class="body-content animated fadeIn">
             @include('form-input.panel-errors')
-            @if($output_code === 'JS')
-                @include('form-input.dedication-output-service')
-            @elseif($output_code === 'MT')
-                @include('form-input.dedication-output-method')
-            @elseif($output_code === 'PB')
-                @include('form-input.dedication-output-product')
-            @elseif($output_code === 'PT')
-                @include('form-input.dedication-output-patent')
-            @elseif($output_code === 'BP')
-                @include('form-input.dedication-output-guidebook')
+
+            @if($status_code === 'RL')
+                @include('form-input.dedication-approve-revisiontext')
             @endif
+
+            @foreach($propose_output_types as $propose_output_type)
+                @php($output_code = $propose_output_type->outputType()->first()->output_code)
+                @if($output_code === 'JS')
+                    @include('form-input.dedication-output-service')
+                @elseif($output_code === 'MT')
+                    @include('form-input.dedication-output-method')
+                @elseif($output_code === 'PB')
+                    @include('form-input.dedication-output-product')
+                @elseif($output_code === 'PT')
+                    @include('form-input.dedication-output-patent')
+                @elseif($output_code === 'BP')
+                    @include('form-input.dedication-output-guidebook')
+                @endif
+            @endforeach
             @if($upd_mode === 'approve')
                 @include('form-input.dedication-approve')
             @endif

@@ -75,7 +75,10 @@
                                                        data-placement="top" data-original-title="Edit">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
-                                                    @if($status_code === 'UL' || $status_code === 'VL' || $status_code === 'PS')
+                                                    @if($status_code === 'UL' ||
+                                                    $status_code === 'VL' ||
+                                                    $status_code === 'RL' ||
+                                                    $status_code === 'PS')
                                                         <a href="{{url($deleteUrl . '/' . $dedication->id .'/output')}}"
                                                            class="btn btn-success btn-xs" data-toggle="tooltip"
                                                            data-placement="top" data-original-title="Unggah Luaran">

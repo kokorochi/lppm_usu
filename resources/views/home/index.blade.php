@@ -27,10 +27,12 @@
                     @foreach($announces as $announce)
                         <div class="announce-item col-lg-3 col-md-3 col-sm-4 col-xs-12">
                             <div class="blog-item rounded shadow">
-                                <a href="{{ url('announces/' . $announce->id) }}">
-                                    <img src="{{$announce->image_name !== null ? url('images/upload/announces', $announce->image_name) : url('images/upload/announces', 'blank.png')}}"
-                                         class="blog-img img-responsive full-width" alt="..."/>
-                                </a>
+                                @if($announce->image_name !== null)
+                                    <a href="{{ url('announces/' . $announce->id) }}">
+                                        <img src="{{$announce->image_name !== null ? url('images/upload/announces', $announce->image_name) : url('images/upload/announces', 'blank.png')}}"
+                                             class="blog-img img-responsive full-width" alt="..."/>
+                                    </a>
+                                @endif
                                 <div class="blog-details">
                                     <h4 class="blog-title"><a
                                                 href="{{ url('announces/' . $announce->id) }}">{{$announce->title}}</a>
