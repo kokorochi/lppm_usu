@@ -60,3 +60,15 @@ var BlankonBlog = function () {
 
 // Call main app init
 BlankonBlog.init();
+
+$(window).load(function () {
+    if ($('#blog-grid').length) {
+        var container = document.querySelector('#blog-grid');
+        var msnry = new Masonry(container, {
+            // options
+            itemSelector: '.announce-item',
+            columnWidth: '.announce-item',
+            isAnimated: true
+        });
+    }
+});

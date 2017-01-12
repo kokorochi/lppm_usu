@@ -67,6 +67,18 @@ Route::put('category-types/{id}/edit', 'CategoryTypeController@update');
 Route::delete('category-types/{id}', 'CategoryTypeController@destroy');
 // End Category Types Route
 
+// Dedication Types Route
+Route::get('dedication-types/', 'DedicationTypeController@index');
+
+Route::get('dedication-types/create', 'DedicationTypeController@create');
+Route::post('dedication-types/create', 'DedicationTypeController@store');
+
+Route::get('dedication-types/{id}/edit', 'DedicationTypeController@edit');
+Route::put('dedication-types/{id}/edit', 'DedicationTypeController@update');
+
+Route::delete('dedication-types/{id}', 'DedicationTypeController@destroy');
+// End Dedication Types Route
+
 // Periods Route
 Route::get('periods/', 'PeriodController@index');
 

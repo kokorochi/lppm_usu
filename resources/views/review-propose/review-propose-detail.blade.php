@@ -159,7 +159,7 @@ $errors->has('score.' . $ctr_old) || old('score.' . $ctr_old)
                                 @endif
                                 <a href="{{url($deleteUrl)}}" class="btn btn-danger btn-slideright">Kembali</a>
                                 @if($upd_mode === 'create')
-                                    <button type="submit" class="btn btn-success btn-slideright">Submit</button>
+                                    <button type="submit" class="btn btn-success btn-slideright">Simpan</button>
                                 @endif
                             </div><!-- /.col-sm-offset-3 -->
                         </div><!-- /.form-footer -->

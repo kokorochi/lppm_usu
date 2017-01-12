@@ -35,7 +35,7 @@ $errors->has('patent_type') || old('patent_type')
                         <label for="patent_no" class="col-sm-4 col-md-3 control-label">Nomor SK Paten</label>
                         <div class="col-sm-7">
                             <input name="patent_no" class="form-control input-sm" type="text"
-                                   value="{{ $dedication_output_patent->patent_no }}" {{$upd_mode !== 'approve' ? '' : 'disabled'}}>
+                                   value="{{ $dedication_output_patent->patent_no }}" {{$upd_mode !== 'approve' && $status_code !== 'PS' ? '' : 'disabled'}}>
                             @if($errors->has('patent_no'))
                                 <label class="error" for="patent_no" style="display: inline-block;">
                                     {{ $errors->first('patent_no') }}
@@ -48,7 +48,7 @@ $errors->has('patent_type') || old('patent_type')
                         <label for="patent_year" class="col-sm-4 col-md-3 control-label">Tahun Paten</label>
                         <div class="col-sm-7">
                             <input name="patent_year" class="form-control input-sm" type="text"
-                                   value="{{ $dedication_output_patent->patent_year }}" {{$upd_mode !== 'approve' ? '' : 'disabled'}}>
+                                   value="{{ $dedication_output_patent->patent_year }}" {{$upd_mode !== 'approve' && $status_code !== 'PS' ? '' : 'disabled'}}>
                             @if($errors->has('patent_year'))
                                 <label class="error" for="patent_year" style="display: inline-block;">
                                     {{ $errors->first('patent_year') }}
@@ -62,7 +62,7 @@ $errors->has('patent_type') || old('patent_type')
                             Paten</label>
                         <div class="col-sm-7">
                             <input name="patent_owner_name" class="form-control input-sm" type="text"
-                                   value="{{ $dedication_output_patent->patent_owner_name }}" {{$upd_mode !== 'approve' ? '' : 'disabled'}}>
+                                   value="{{ $dedication_output_patent->patent_owner_name }}" {{$upd_mode !== 'approve' && $status_code !== 'PS' ? '' : 'disabled'}}>
                             @if($errors->has('patent_owner_name'))
                                 <label class="error" for="patent_owner_name" style="display: inline-block;">
                                     {{ $errors->first('patent_owner_name') }}
@@ -75,7 +75,7 @@ $errors->has('patent_type') || old('patent_type')
                         <label for="patent_type" class="col-sm-4 col-md-3 control-label">Jenis Paten</label>
                         <div class="col-sm-7">
                             <input name="patent_type" class="form-control input-sm" type="text"
-                                   value="{{ $dedication_output_patent->patent_type }}" {{$upd_mode !== 'approve' ? '' : 'disabled'}}>
+                                   value="{{ $dedication_output_patent->patent_type }}" {{$upd_mode !== 'approve' && $status_code !== 'PS' ? '' : 'disabled'}}>
                             @if($errors->has('patent_type'))
                                 <label class="error" for="patent_type" style="display: inline-block;">
                                     {{ $errors->first('patent_type') }}
@@ -101,7 +101,7 @@ $errors->has('patent_type') || old('patent_type')
                             </div>
                         @endif
 
-                        @if($upd_mode !== 'approve')
+                        @if($upd_mode !== 'approve' && $status_code !== 'PS')
                             <div class="clearfix"></div>
                             <label class="control-label col-sm-4 col-md-3">Unggah Sertifikat Paten</label>
                             <div class="col-sm-7">
@@ -129,7 +129,7 @@ $errors->has('patent_type') || old('patent_type')
                         @endif
                     </div> <!-- /.form-group -->
 
-                    @if($upd_mode !== 'approve')
+                    @if($upd_mode !== 'approve' && $status_code !== 'PS')
                         {{ csrf_field() }}
                         <input type="hidden" name="_method" value="PUT">
 

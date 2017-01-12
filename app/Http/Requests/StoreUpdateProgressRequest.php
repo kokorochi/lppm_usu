@@ -68,7 +68,7 @@ class StoreUpdateProgressRequest extends FormRequest {
         $period = Dedication::find($this->id)->propose()->first()->period()->first();
         $today_date = Carbon::now()->toDateString();
 
-        if ($period->first_begda >= $today_date || $period->first_endda <= $today_date)
+        if (! ($today_date >= $period->first_begda && $today_date <= $period->first_endda))
         {
             array_push($ret, 'Tidak dalam masa update Laporan Kemajuan');
         }

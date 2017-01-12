@@ -4,7 +4,7 @@
 <!-- START @META SECTION -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="http://localhost/lppm_blankon/public/assets//images/shortcut icon.png" rel="shortcut icon">
+    <link href="{{$assetUrl}}/images/shortcut icon.png" rel="shortcut icon">
 <!-- START @FONT STYLES -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Oswald:700,400" rel="stylesheet">
@@ -21,7 +21,7 @@
 <body class="page-session page-sound page-header-fixed page-sidebar-fixed">
 <div id="print-review-wrapper">
     <div class="double-border">
-        <h5 class="text-center">USULAN PROGRAM PENGABDIAN KEPADA MASYARAKAT MONO TAHUN DAN MULTI TAHUN</h5>
+        <h5 class="text-center">USULAN {{strtoupper($review_propose->propose()->first()->period()->first()->scheme)}}</h5>
     </div>
     <table class="print-header">
         <tbody>

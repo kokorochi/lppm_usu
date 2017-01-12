@@ -44,8 +44,7 @@
                                     <div class="blog-summary">
                                         <p>{{$announce->content}}</p>
                                         <a href="{{ url('announces/' . $announce->id) }}"
-                                           class="btn btn-sm btn-success">Read
-                                            More</a>
+                                           class="btn btn-sm btn-success">Baca Lanjutan</a>
                                     </div>
                                 </div>
                             </div><!-- /.blog-item -->

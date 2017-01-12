@@ -16,8 +16,8 @@ class CategoryTypeController extends BlankonController {
 
     public function __construct()
     {
-        $this->middleware('auth', ['except' => 'showSingleList']);
-        $this->middleware('isOperator', ['except' => 'showSingleList']);
+        $this->middleware('auth');
+        $this->middleware('isOperator');
         parent::__construct();
 
         array_push($this->css['pages'], 'global/plugins/bower_components/fontawesome/css/font-awesome.min.css');

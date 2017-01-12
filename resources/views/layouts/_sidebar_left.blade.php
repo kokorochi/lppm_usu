@@ -117,6 +117,25 @@ START @SIDEBAR LEFT
             </li>
             <!--/ End navigation - Funding Sources -->
 
+            <!-- Start navigation - Dedication Types -->
+            <li {!! Request::is('dedication-types','dedication-types/*')? 'class="submenu active"' : 'class="submenu"' !!}>
+                <a href="javascript:void(0);">
+                    <span class="icon"><i class="fa fa-file-archive-o"></i></span>
+                    <span class="text">Jenis Pengabdian</span>
+                    <span class="arrow"></span>
+                    {!! Request::is('dedication-types', 'dedication-types/*') ? '<span class="selected"></span>' : null !!}
+                </a>
+                <ul>
+                    <li {!! Request::is('dedication-types','dedication-types/create')? 'class="active"' : null !!}>
+                        <a href="{{url('dedication-types/create')}}">Tambah</a>
+                    </li>
+                    <li {!! Request::is('dedication-types','dedication-types/list')? 'class="active"' : null !!}>
+                        <a href="{{url('dedication-types/')}}">Daftar</a>
+                    </li>
+                </ul>
+            </li>
+            <!--/ End navigation - Dedication Types -->
+
             <!-- Start navigation - Period -->
             <li {!! Request::is('periods','periods/*')? 'class="submenu active"' : 'class="submenu"' !!}>
                 <a href="javascript:void(0);">

@@ -42,7 +42,7 @@ $errors->has('annotation') || old('annotation')
                             </div>
                         @endif
 
-                        @if($upd_mode !== 'approve')
+                        @if($upd_mode !== 'approve' && $status_code !== 'PS')
                             <div class="clearfix"></div>
                             <label class="control-label col-sm-4 col-md-3">Unggah Dokumen (skema, diagram, formula,
                                 rumus, dll) dalam 1 file</label>
@@ -74,7 +74,7 @@ $errors->has('annotation') || old('annotation')
                         <label for="annotation" class="col-sm-4 col-md-3 control-label">Keterangan</label>
                         <div class="col-sm-7">
                             <textarea name="annotation" class="form-control input-sm" rows="12"
-                                      placeholder="" {{$upd_mode !== 'approve' ? '' : 'disabled'}}>{{ $dedication_output_method->annotation }}</textarea>
+                                      placeholder="" {{$upd_mode !== 'approve' && $status_code !== 'PS' ? '' : 'disabled'}}>{{ $dedication_output_method->annotation }}</textarea>
                             @if($errors->has('annotation'))
                                 <label class="error" for="annotation" style="display: inline-block;">
                                     {{ $errors->first('annotation') }}
@@ -83,7 +83,7 @@ $errors->has('annotation') || old('annotation')
                         </div>
                     </div>
 
-                    @if($upd_mode !== 'approve')
+                    @if($upd_mode !== 'approve' && $status_code !== 'PS')
                         {{ csrf_field() }}
                         <input type="hidden" name="_method" value="PUT">
 

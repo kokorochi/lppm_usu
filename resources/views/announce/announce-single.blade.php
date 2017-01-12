@@ -38,7 +38,7 @@
                             </ul>
                             <hr>
                             @if($announce->image_name !== null)
-                                <div class="blog-img">
+                                <div>
                                     <img src="{{url('images/upload/announces', $announce->image_name)}}" alt=""
                                          class="img-responsive">
                                 </div>

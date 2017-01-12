@@ -188,7 +188,8 @@ class DedicationController extends BlankonController {
             'status_code',
             'disable_final_amount',
             'disabled',
-            'upd_mode'
+            'upd_mode',
+            'flow_status'
         ));
     }
 
@@ -363,6 +364,7 @@ class DedicationController extends BlankonController {
         if ($dedication_output_revision === null) $dedication_output_revision = new DedicationOutputRevision();
 
         $upd_mode = 'output';
+        if ($status_code === 'PS') $disabled = 'disabled';
 
         return view('dedication.dedication-output', compact(
             'dedication',
@@ -376,7 +378,8 @@ class DedicationController extends BlankonController {
             'dedication_output_product',
             'dedication_output_patent',
             'dedication_output_guidebook',
-            'upd_mode'
+            'upd_mode',
+            'disabled'
         ));
     }
 

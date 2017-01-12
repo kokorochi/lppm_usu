@@ -39,7 +39,7 @@
                             </div>
                         </div>
                     @endif
-                    @if($upd_mode !== 'review')
+                    @if($upd_mode !== 'review' && $flow_status->status_code !== 'PS')
                         <div class="form-group">
                             <label class="control-label col-sm-4 col-md-3">Unggah Laporan Akhir (Kegiatan)</label>
                             <div class="col-sm-7">
@@ -81,7 +81,7 @@
                         </div>
                     @endif
 
-                    @if($upd_mode !== 'review')
+                    @if($upd_mode !== 'review' && $flow_status->status_code !== 'PS')
                         <div class="form-group">
                             <label class="control-label col-sm-4 col-md-3">Unggah Laporan Akhir (Anggaran)</label>
                             <div class="col-sm-7">
@@ -107,7 +107,7 @@
                     @endif
                 </div><!-- /.form-body -->
 
-                @if($upd_mode !== 'review')
+                @if($upd_mode !== 'review' && $flow_status->status_code !== 'PS')
                     {{ csrf_field() }}
                     <input type="hidden" name="_method" value="PUT">
 

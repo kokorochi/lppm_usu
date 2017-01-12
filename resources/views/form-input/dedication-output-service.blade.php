@@ -62,7 +62,7 @@
                                     </div>
                                 @endif
 
-                                @if($upd_mode !== 'approve')
+                                @if($upd_mode !== 'approve' && $status_code !== 'PS')
                                     <div class="clearfix"></div>
                                     <label class="control-label col-sm-4 col-md-3">Unggah Dokumentasi</label>
                                     <div class="col-sm-6">
@@ -98,7 +98,7 @@
                         @endforeach
                     </div>
 
-                    @if($upd_mode !== 'approve')
+                    @if($upd_mode !== 'approve' && $status_code !== 'PS')
                         {{ csrf_field() }}
                         <input type="hidden" name="_method" value="PUT">
 

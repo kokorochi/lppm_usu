@@ -1,13 +1,3 @@
-{{--Get Old Value And Place It To VARIABLE--}}
-{{--@if(--}}
-{{--$errors->has('annotation') || old('annotation')--}}
-{{--)--}}
-{{--@php--}}
-{{--$dedication_output_method->annotation = old('annotation');--}}
-{{--@endphp--}}
-{{--@endif--}}
-{{--Get Old Value And Place It To VARIABLE--}}
-
 <div class="row">
     <div class="col-md-12">
         <div class="panel rounded shadow">
@@ -42,7 +32,7 @@
                             </div>
                         @endif
 
-                        @if($upd_mode !== 'approve')
+                        @if($upd_mode !== 'approve' && $status_code !== 'PS')
                             <div class="clearfix"></div>
                             <label class="control-label col-sm-4 col-md-3">Unggah Blueprint</label>
                             <div class="col-sm-7">
@@ -87,7 +77,7 @@
                             </div>
                         @endif
 
-                        @if($upd_mode !== 'approve')
+                        @if($upd_mode !== 'approve' && $status_code !== 'PS')
                             <div class="clearfix"></div>
                             <label class="control-label col-sm-4 col-md-3">Unggah Barang Jadi</label>
                             <div class="col-sm-7">
@@ -132,7 +122,7 @@
                             </div>
                         @endif
 
-                        @if($upd_mode !== 'approve')
+                        @if($upd_mode !== 'approve' && $status_code !== 'PS')
                             <div class="clearfix"></div>
                             <label class="control-label col-sm-4 col-md-3">Unggah Gambar Kerja</label>
                             <div class="col-sm-7">
@@ -160,7 +150,7 @@
                         @endif
                     </div> <!-- /.form-group -->
 
-                    @if($upd_mode !== 'approve')
+                    @if($upd_mode !== 'approve' && $status_code !== 'PS')
                         {{ csrf_field() }}
                         <input type="hidden" name="_method" value="PUT">
 
