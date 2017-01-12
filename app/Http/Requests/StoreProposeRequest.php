@@ -153,6 +153,15 @@ class StoreProposeRequest extends FormRequest {
             {
                 array_push($ret, 'Informasi rekening bank harus diisi');
             }
+
+            $period = Period::find($this->input('period_id'));
+            if ($period !== null)
+            {
+                if (! (count($this->input('member_nidn')) >= $period->min_member && count($this->input('member_nidn')) <= $period->max_member))
+                {
+                    array_push($ret, 'Jumlah anggota tidak sesuai dengan data anggota yang diisi');
+                }
+            }
         }
 
         //Check file partner contract
@@ -238,7 +247,7 @@ class StoreProposeRequest extends FormRequest {
                 $proposes = $period->propose()->where('created_by', '<>', Auth::user()->nidn)->where('is_own', null)->get();
                 foreach ($proposes as $propose)
                 {
-                    $member = $item->member()->where('nidn', Auth::user()->nidn)->where('status', 'accepted')->first();
+                    $member = $propose->member()->where('nidn', Auth::user()->nidn)->where('status', 'accepted')->first();
                     if ($member !== null)
                     {
                         $i_as_member++;

@@ -33,7 +33,7 @@ $errors->has('member_areas_of_expertise.' . $ctr_old) || old('member_areas_of_ex
 @endwhile
 
 @if($errors->has('areas_of_expertise') || old('areas_of_expertise'))
-    @php($propose->areas_of_expertise = old('areas_of_expertise'));
+    @php($propose->areas_of_expertise = old('areas_of_expertise'))
 @endif
 {{--Get Old Value And Place It To VARIABLE--}}
 
