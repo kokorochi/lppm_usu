@@ -45,10 +45,12 @@
                 @include('form-input.dedication-progress')
             </form>
 
-            <form class="" action="{{url($deleteUrl, $dedication->id) . '/edit-final'}}" method="POST"
-                  enctype="multipart/form-data">
-                @include('form-input.dedication-final')
-            </form>
+            @if($status_code !== 'LK')
+                <form class="" action="{{url($deleteUrl, $dedication->id) . '/edit-final'}}" method="POST"
+                      enctype="multipart/form-data">
+                    @include('form-input.dedication-final')
+                </form>
+            @endif
         </div><!-- /.body-content -->
 
         <!-- Start footer content -->
