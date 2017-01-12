@@ -1,4 +1,8 @@
 /* Create your style on here */
+body{
+    overflow-y: scroll;
+}
+
 .member-wrapper div.form-group:first-child {
     border-top: 1px solid #DDD;
 }
@@ -9,6 +13,12 @@
     color: #FFFFFF;
     padding: 5px 10px;
     margin-left: 35px;
+}
+
+.blog-img{
+    max-height: 170px;
+    width: auto !important;
+    margin: 0 auto;
 }
 
 .announce-image{
