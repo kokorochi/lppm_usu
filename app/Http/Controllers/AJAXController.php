@@ -38,12 +38,11 @@ class AJAXController extends BlankonController {
         $lecturers = Lecturer::where('full_name', 'LIKE', $input)
             ->orWhere('employee_card_serial_number', 'LIKE', $input)->take(10)->get();
 
-//        $ret = array();
-//        foreach ($lecturers as $lecturer)
-//        {
-//            $ret['suggestions'][]['value'] = $lecturer->full_name;
-//            $ret['suggestions'][]['data'] = $lecturer->employee_card_serial_number;
-//        }
+        foreach ($lecturers as $lecturer)
+        {
+            $lecturer->full_name = $lecturer->employee_card_serial_number . ' : ' . $lecturer->full_name;
+        }
+
         $lecturers = json_encode($lecturers, JSON_PRETTY_PRINT);
 
         return response($lecturers, 200)->header('Content-Type', 'application/json');
@@ -111,6 +110,12 @@ class AJAXController extends BlankonController {
 
             $i++;
         }
+        $count_data = count($data);
+        if ($count_data == 0)
+        {
+            $data['data'] = [];
+        }
+        $data['iTotalRecords'] = $data['iTotalDisplayRecords'] = $count_data;
         $data = json_encode($data, JSON_PRETTY_PRINT);
 
         return response($data, 200)->header('Content-Type', 'application/json');

@@ -35,7 +35,7 @@ class HomeController extends BlankonController
 
     public function index()
     {
-        $announces = Announce::orderBy('id', 'DESC')->paginate(4);
+        $announces = Announce::orderBy('id', 'DESC')->paginate(5);
         foreach ($announces as $announce) {
             $title_overlength = false;
             $content_overlength = false;

@@ -55,7 +55,7 @@ class AnnouncesController extends BlankonController {
         {
             $announce->no = $i;
             $announce->title = substr($announce->title, 0, 40);
-            $announce->content = substr(strip_tags($announce->content), 0, 100);
+            $announce->content = substr(trim(strip_tags($announce->content)), 0, 100);
             $i = $i + 1;
         }
 
