@@ -11,7 +11,7 @@
         <!--/ Brand -->
 
         <!-- Login form -->
-        <form class="sign-in form-horizontal shadow rounded no-overflow" action="{{url('user/login')}}" method="post">
+        <form class="sign-in form-horizontal shadow rounded no-overflow submit-form" action="{{url('user/login')}}" method="post">
             <div class="sign-header">
                 <div class="form-group">
                     <div class="sign-text">
@@ -67,7 +67,7 @@
                     </div>
                 </div><!-- /.form-group -->
                 <div class="form-group">
-                    <button type="submit" class="btn btn-theme btn-lg btn-block no-margin rounded" id="login-btn">
+                    <button type="submit" class="btn btn-theme btn-lg btn-block no-margin rounded submit" id="login-btn">
                         Masuk
                     </button>
                 </div><!-- /.form-group -->

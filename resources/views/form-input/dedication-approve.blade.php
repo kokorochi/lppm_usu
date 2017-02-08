@@ -23,7 +23,7 @@ $errors->has('sumErrors')
             </div>
             <div class="panel-body no-padding">
                 <form action="{{url($deleteUrl, $dedication->id) . '/approve'}}" method="post"
-                      class="form-body form-horizontal form-bordered">
+                      class="form-body form-horizontal form-bordered submit-form">
                     <div class="form-group">
                         <label for="title" class="col-sm-4 col-md-3 control-label">Disetujui</label>
                         <div class="col-sm-7">
@@ -59,7 +59,7 @@ $errors->has('sumErrors')
                     <div class="form-footer">
                         <div class="col-sm-offset-4 col-md-offset-3">
                             <a href="{{url($deleteUrl . '/approve-list')}}" class="btn btn-teal btn-slideright">Kembali</a>
-                            <button type="submit" class="btn btn-success btn-slideright">Simpan</button>
+                            <button type="submit" class="btn btn-success btn-slideright submit">Simpan</button>
                         </div><!-- /.col-sm-offset-3 -->
                     </div><!-- /.form-footer -->
                 </form>

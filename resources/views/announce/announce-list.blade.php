@@ -6,7 +6,7 @@
 
         <!-- Start page header -->
         <div class="header-content">
-            <h2><i class="fa fa-bullhorn"></i>Daftar Pengumuman</h2>
+            <h2><i class="fa fa-bullhorn"></i>Pengumuman</h2>
             <div class="breadcrumb-wrapper hidden-xs">
                 <span class="label">Direktori anda:</span>
                 <ol class="breadcrumb">

@@ -28,7 +28,7 @@
 
                 @include('form-input.panel-errors')
 
-            <form class="" action="{{url('proposes/create')}}" method="POST" enctype="multipart/form-data">
+            <form class="submit-form" action="{{$form_action}}" method="POST" enctype="multipart/form-data">
                 @include('form-input.propose-scheme')
 
                 @include('form-input.propose-partner')
@@ -43,12 +43,16 @@
                     <div class="col-md-12">
                         <div class="panel">
 
+                            @if($upd_mode === 'edit')
+                                <input type="hidden" name="_method" value="PUT">
+                            @endif
                             {{ csrf_field() }}
 
                             <div class="form-footer">
                                 <div class="col-sm-offset-4 col-md-offset-3">
                                     <a href="{{url($deleteUrl)}}" class="btn btn-teal btn-slideright">Kembali</a>
-                                    <button type="submit" class="btn btn-success btn-slideright">Tambah</button>
+                                    <button name="submit_button" type="submit" value="temporary" class="btn btn-lilac btn-slideright submit">Simpan Sementara</button>
+                                    <button name="submit_button" type="submit" value="save" class="btn btn-success btn-slideright submit">Submit</button>
                                 </div><!-- /.col-sm-offset-3 -->
                             </div><!-- /.form-footer -->
                         </div><!-- /.panel -->

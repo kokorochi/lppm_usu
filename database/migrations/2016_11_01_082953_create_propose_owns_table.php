@@ -16,12 +16,12 @@ class CreateProposeOwnsTable extends Migration
         Schema::create('proposes_own', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('propose_id', false, true);
-            $table->smallInteger('years', false, true);
-            $table->integer('dedication_type', false, true);
-            $table->string('scheme');
-            $table->string('sponsor');
-            $table->smallInteger('member', false, true);
-            $table->text('annotation');
+            $table->smallInteger('years', false, true)->nullable();
+            $table->integer('dedication_type', false, true)->nullable();
+            $table->string('scheme')->nullable();
+            $table->string('sponsor')->nullable();
+            $table->smallInteger('member', false, true)->nullable();
+            $table->text('annotation')->nullable();
         });
     }
 

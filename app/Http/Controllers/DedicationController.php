@@ -36,8 +36,9 @@ class DedicationController extends BlankonController {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('isLecturer')->except(['approveList', 'approveDetail', 'approveUpdate']);
+        $this->middleware('isLecturer')->except(['approveList', 'approveDetail', 'approveUpdate', 'getOutputFile']);
         $this->middleware('isOperator')->only(['approveList', 'approveDetail', 'approveUpdate']);
+        $this->middleware('isLecturerOrOperator')->only(['getOutputFile']);
         parent::__construct();
 
         array_push($this->css['pages'], 'global/plugins/bower_components/fontawesome/css/font-awesome.min.css');

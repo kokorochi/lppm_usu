@@ -11,7 +11,7 @@
         <!--/ Brand -->
 
         <!-- Login form -->
-        <form class="sign-in form-horizontal shadow rounded no-overflow" action="{{url('user/reset')}}" method="post">
+        <form class="sign-in form-horizontal shadow rounded no-overflow submit-form" action="{{url('user/reset')}}" method="post">
             <div class="sign-header">
                 <div class="form-group">
                     <div class="sign-text">
@@ -56,7 +56,7 @@
                     </div>
                 @endif
                 <div class="form-group">
-                    <button type="submit" class="btn btn-theme btn-lg btn-block no-margin rounded" id="login-btn">
+                    <button type="submit" class="btn btn-theme btn-lg btn-block no-margin rounded submit" id="login-btn">
                         Simpan
                     </button>
                 </div><!-- /.form-group -->

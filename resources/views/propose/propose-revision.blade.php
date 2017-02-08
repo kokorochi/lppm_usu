@@ -38,7 +38,7 @@
 
             @include('form-input.propose-upload')
 
-            <form class="" action="{{url('proposes', $propose->id) . '/revision'}}" method="POST" enctype="multipart/form-data">
+            <form class="submit-form" action="{{url('proposes', $propose_relation->propose->id) . '/revision'}}" method="POST" enctype="multipart/form-data">
                 @if($status_code === 'PU')
                     @include('form-input.propose-revision')
                 @endif
@@ -52,8 +52,8 @@
 
                             <div class="form-footer">
                                 <div class="col-sm-offset-4 col-md-offset-3">
-                                    <a href="{{url($deleteUrl)}}" class="btn btn-danger btn-slideright">Kembali</a>
-                                    <button type="submit" class="btn btn-success btn-slideright">Update Perbaikan</button>
+                                    <a href="{{url($deleteUrl)}}" class="btn btn-teal btn-slideright">Kembali</a>
+                                    <button type="submit" class="btn btn-success btn-slideright submit">Update Perbaikan</button>
                                 </div><!-- /.col-sm-offset-3 -->
                             </div><!-- /.form-footer -->
                         </div><!-- /.panel -->

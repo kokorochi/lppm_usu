@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FlowStatus extends Model {
     protected $fillable = [
-        'id',
+        'propose_id',
         'item',
         'status_code',
         'created_by',

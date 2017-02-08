@@ -1,5 +1,16 @@
 @extends('layouts.lay_admin')
 
+@php
+    $olds = session()->getOldInput();
+    foreach ($olds as $key => $old)
+    {
+        if($key !== '_token')
+        {
+            $period[$key] = old($key);
+        }
+    }
+@endphp
+
 @section('content')
 <section id="page-content">
 
@@ -46,8 +57,8 @@
                     </div><!-- /.panel-heading -->
 
                     <div class="panel-body no-padding">
-                        <form id="dp" class="form-horizontal" action="{{url('periods', $period->id) . '/edit'}}" method="POST">
-                            <div class="form-body">
+                        <form id="dp" class="form-horizontal submit-form" action="{{url('periods', $period->id) . '/edit'}}" method="POST">
+                            <div class="form-body" id="input-mask">
 
                                 <div class="form-group">
                                     <label for="years" class="col-sm-3 control-label">Tahun</label>
@@ -138,6 +149,55 @@
                                         @endif
                                     </div>
                                 </div><!-- /.form-group -->
+
+                                <div class="form-group">
+                                    <label for="total_amount" class="col-sm-3 control-label">Jumlah Dana
+                                        Maksimal</label>
+                                    <div class="col-sm-7">
+                                        <input name="total_amount" class="form-control input-sm"
+                                               data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'rightAlign': false"
+                                               type="text" value="{{$period->total_amount}}">
+                                        @if($errors->has('total_amount'))
+                                            <label class="error" for="total_amount" style="display: inline-block;">
+                                                {{ $errors->first('total_amount') }}
+                                            </label>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="score" class="col-sm-3 control-label">Skor Minimal</label>
+                                    <div class="col-sm-7">
+                                        <input name="score" class="form-control input-sm"
+                                               maxlength="5"
+                                               data-inputmask="'alias': 'decimal', 'rightAlign': false"
+                                               type="text" value="{{$period->score}}">
+                                        @if($errors->has('score'))
+                                            <label class="error" for="score" style="display: inline-block;">
+                                                {{ $errors->first('score') }}
+                                            </label>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="external" class="col-sm-3 control-label">Dosen Luar
+                                        Diperbolehkan</label>
+                                    <div class="col-md-7">
+                                        <div class="rdio rdio-theme circle">
+                                            <div class="radio-inline">
+                                                <input id="external_no" name="allow_external" type="radio"
+                                                       value="0" {{$period->allow_external == false ? 'checked' : ''}}>
+                                                <label for="external_no">Tidak</label>
+                                            </div>
+                                            <div class="radio-inline">
+                                                <input id="external_yes" name="allow_external" type="radio"
+                                                       value="1" {{$period->allow_external == true ? 'checked' : ''}}>
+                                                <label for="external_yes">Ya</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="form-group">
                                     <label for="propose_begda" class="col-sm-3 control-label">Periode Usulan</label>
@@ -271,7 +331,7 @@
                                 <div class="form-footer">
                                     <div class="col-sm-offset-3">
                                         <a href="{{url($deleteUrl)}}" class="btn btn-danger btn-slideright">Kembali</a>
-                                        <button type="submit" class="btn btn-success btn-slideright">Ubah</button>
+                                        <button type="submit" class="btn btn-success btn-slideright submit">Ubah</button>
                                     </div>
                                 </div>
                             </div><!-- /.form-body -->

@@ -40,13 +40,13 @@
 
             @include('form-input.propose-revision')
 
-            <form class="" action="{{url($deleteUrl, $dedication->id) . '/edit-progress'}}" method="POST"
+            <form class="submit-form" action="{{url($deleteUrl, $dedication->id) . '/edit-progress'}}" method="POST"
                   enctype="multipart/form-data">
                 @include('form-input.dedication-progress')
             </form>
 
             @if($status_code !== 'LK')
-                <form class="" action="{{url($deleteUrl, $dedication->id) . '/edit-final'}}" method="POST"
+                <form class="submit-form" action="{{url($deleteUrl, $dedication->id) . '/edit-final'}}" method="POST"
                       enctype="multipart/form-data">
                     @include('form-input.dedication-final')
                 </form>

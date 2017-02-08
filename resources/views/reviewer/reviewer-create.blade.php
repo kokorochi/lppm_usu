@@ -43,7 +43,7 @@ $errors->has('end_date') || old('end_date'))
 
             @include('form-input.panel-errors')
 
-            <form class="" action="{{url('reviewers/create')}}" method="POST">
+            <form class="submit-form" action="{{url('reviewers/create')}}" method="POST">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel">
@@ -150,7 +150,7 @@ $errors->has('end_date') || old('end_date'))
                             <div class="form-footer">
                                 <div class="col-sm-offset-4 col-md-offset-3">
                                     <a href="{{url($deleteUrl)}}" class="btn btn-teal btn-slideright">Kembali</a>
-                                    <button type="submit" class="btn btn-success btn-slideright">Tambah</button>
+                                    <button type="submit" class="btn btn-success btn-slideright submit">Tambah</button>
                                 </div><!-- /.col-sm-offset-3 -->
                             </div><!-- /.form-footer -->
                         </div><!-- /.panel -->

@@ -94,7 +94,7 @@ $errors->has('score.' . $ctr_old) || old('score.' . $ctr_old)
                             </div>
                         </div>
                     </div>
-                    <form class="" action="{{url('review-proposes',$propose->id) . '/review'}}" method="POST">
+                    <form class="submit-form" action="{{url('review-proposes',$propose->id) . '/review'}}" method="POST">
                         <table class="table table-bordered table-striped">
                             <tbody>
                             @foreach($review_proposes_i as $key => $review_propose_i)
@@ -159,7 +159,7 @@ $errors->has('score.' . $ctr_old) || old('score.' . $ctr_old)
                                 @endif
                                 <a href="{{url($deleteUrl)}}" class="btn btn-danger btn-slideright">Kembali</a>
                                 @if($upd_mode === 'create')
-                                    <button type="submit" class="btn btn-success btn-slideright">Simpan</button>
+                                    <button type="submit" class="btn btn-success btn-slideright submit">Simpan</button>
                                 @endif
                             </div><!-- /.col-sm-offset-3 -->
                         </div><!-- /.form-footer -->

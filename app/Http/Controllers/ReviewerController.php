@@ -144,6 +144,10 @@ class ReviewerController extends BlankonController {
     public function assignList()
     {
         $periods = Period::where('review_endda', '>=', Carbon::now()->toDateString())->get();
+        if($periods->isEmpty())
+        {
+            $periods->add(new Period);
+        }
         $period = $periods[0];
         $proposes = $period->propose()->paginate(10);
         $data_not_found = 'Tidak ada pengajuan proposal untuk scheme ini';
@@ -158,8 +162,17 @@ class ReviewerController extends BlankonController {
 
     public function assign($id)
     {
-        $disable_reviewer = false;
         $propose = Propose::find($id);
+        if($propose === null)
+        {
+            $this->setCSS404();
+
+            return abort('404');
+        }
+
+        $propose_relation = $this->getProposeRelationData($propose);
+        $propose_relation->propose = $propose;
+
         $dedication_reviewers = Dedication_reviewer::where('propose_id', $propose->id)->get();
         $dedication_reviewer = new Dedication_reviewer;
         if ($dedication_reviewers->isEmpty())
@@ -174,34 +187,28 @@ class ReviewerController extends BlankonController {
                 $dedication_reviewer->disabled = 'readonly';
             }
         }
-        $propose_own = new Propose_own;
-        $periods = Period::all();
-        $period = $propose->period()->first();
-        $members = $propose->member()->get();
-        foreach ($members as $member)
+        $reviewers = Auths::where('auth_object_ref_id', '3')->get();
+        foreach ($reviewers as $reviewer)
         {
-            $member['member_display'] = Member::where('id', $member->id)->where('item', $member->item)->first()->lecturer()->first()->full_name;
+            $lecturer = $reviewer->user()->first()->lecturer()->first();
+            $reviewer->nidn = $lecturer->employee_card_serial_number;
+            $reviewer->full_name = $reviewer->nidn . ' : ' . $lecturer->full_name;
         }
-        $dedication_partners = $propose->dedicationPartner()->get();
-        $dedication_types = Dedication_type::all();
-        $output_types = Output_type::all();
-        $lecturer = Lecturer::where('employee_card_serial_number', $propose->created_by)->first();
-        $faculties = Faculty::where('is_faculty', 1)->get();
+
         $disabled = 'disabled';
         $disable_upload = true;
+        if($propose_relation->flow_status->status_code === 'PR' ||
+            $propose_relation->flow_status->status_code === 'MR')
+        {
+            $disable_reviewer = false;
+        }else{
+            $disable_reviewer = true;
+        }
 
         return view('reviewer/reviewer-assign', compact(
-            'propose',
-            'dedication_reviewers',
-            'lecturer',
-            'output_types',
-            'faculties',
-            'propose_own',
-            'periods',
-            'period',
-            'dedication_partners',
-            'dedication_types',
-            'members',
+            'propose_relation',
+            'research_reviewers',
+            'reviewers',
             'disabled',
             'disable_upload',
             'disable_reviewer'
@@ -260,27 +267,122 @@ class ReviewerController extends BlankonController {
         $flow_statuses->status_code = 'MR'; //Menunggu diReview
         $flow_statuses->created_by = Auth::user()->nidn;
 
-        DB::transaction(function() use($dedication_review_new, $dedication_review_restore, $dedication_review_delete, $flow_statuses){
+        DB::transaction(function() use($dedication_review_new, $dedication_review_restore, $dedication_review_delete, $flow_statuses, $propose){
             foreach ($dedication_review_restore as $item)
             {
                 $item->restore();
                 $item->updated_by = Auth::user()->nidn;
                 $item->save();
+
+                $this->setEmail('reviewer new', $propose, $item->nidn);
             }
             foreach ($dedication_review_new as $item)
             {
                 $item->created_by = Auth::user()->nidn;
                 $item->save();
+
+                $this->setEmail('reviewer new', $propose, $item->nidn);
             }
             foreach ($dedication_review_delete as $item)
             {
                 $item->updated_by = Auth::user()->nidn;
                 $item->save();
                 $item->delete();
+
+                $review_propose = $propose->reviewPropose()->where('nidn', $item->nidn)->first();
+                if($review_propose !== null) $review_propose->delete();
+
+                $this->setEmail('reviewer delete', $propose, $item->nidn);
             }
             $flow_statuses->save();
         });
         return redirect()->intended('reviewers/assign');
+    }
+
+    private function getProposeRelationData($propose = null)
+    {
+        $ret = new \stdClass();
+        if ($propose !== null)
+        {
+            $ret->propose_own = $propose->proposesOwn()->first();
+            $ret->periods = $propose->period()->get();
+            $ret->period = $propose->period()->first();
+            $ret->propose_output_types = $propose->proposeOutputType()->get();
+            $ret->members = $propose->member()->get();
+            $ret->flow_status = $propose->flowStatus()->orderBy('id', 'desc')->first();
+            $ret->dedication_partners = $propose->dedicationPartner()->get();
+            $ret->dedication_partner = $propose->dedicationPartner()->first();
+            foreach ($ret->members as $member)
+            {
+                if ($member->external === '1')
+                {
+                    $external_member = $member->externalMember()->first();
+                    $member->external_name = $external_member->name;
+                    $member->external_affiliation = $external_member->affiliation;
+                } else
+                {
+                    if ($member->nidn !== null && $member->nidn !== '')
+                    {
+                        $member->member_display = $member->nidn . ' : ' . Member::where('id', $member->id)->where('item', $member->item)->first()->lecturer()->first()->full_name;
+                        $member->member_nidn = $member->nidn;
+                    }
+                }
+            }
+            $ret->member = $ret->members->get(0);
+            $ret->lecturer = Lecturer::where('employee_card_serial_number', $propose->created_by)->first();
+            $ret->faculties = Faculty::where('is_faculty', '1')->get();
+            $ret->output_types = Output_type::all();
+            $ret->output_types->add(new Output_type());
+            $ret->dedication_types = Dedication_type::all();
+
+            if ($ret->propose_own === null)
+            {
+                $ret->propose_own = new Propose_own();
+            }
+            if ($ret->periods === null)
+            {
+                $ret->periods = new Collection();
+                $ret->periods->add(new Period);
+            }
+            if ($ret->period === null)
+            {
+                $ret->period = new Period();
+            }
+        } else
+        {
+            $ret->propose = new Propose();
+            $ret->propose_own = new Propose_own();
+
+            $ret->periods = Period::where('propose_begda', '<=', Carbon::now()->toDateString())->where('propose_endda', '>=', Carbon::now()->toDateString())->get();
+            if ($ret->periods->isEmpty())
+            {
+                $ret->period = new Period();
+                $ret->propose->is_own = '1';
+            } else
+            {
+                $ret->period = $ret->periods->get(0);
+            }
+            $ret->output_types = Output_type::all();
+            $ret->output_types->add(new Output_type());
+            $ret->category_types = Category_type::all();
+            $ret->dedication_types = Dedication_type::all();
+            $ret->propose_output_types = new Collection();
+            $ret->propose_output_types->add(new ProposeOutputType());
+            $ret->propose_output_types->add(new ProposeOutputType());
+            $ret->propose_output_types->add(new ProposeOutputType());
+            $ret->dedication_partners = new Collection();
+            $ret->dedication_partner = add(new Dedication_partner());
+
+            $ret->lecturer = $this->getEmployee(Auth::user()->nidn);
+
+            $ret->members = new Collection;
+            $ret->member = new Member;
+            $ret->members->add(new Member);
+
+            $ret->faculties = Faculty::where('is_faculty', '1')->where('faculty_code', '<>', 'SPS')->get();
+        }
+
+        return $ret;
     }
 
     private function setCSS404()

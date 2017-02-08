@@ -65,7 +65,7 @@
                         </div><!-- /.panel-heading -->
 
                         <div class="panel-body no-padding">
-                            <form class="form-horizontal form-bordered" action="{{$form_action}}" method="POST">
+                            <form class="form-horizontal form-bordered submit-form" action="{{$form_action}}" method="POST">
                                 <div class="form-body">
                                     <div class="input_fields_wrap">
                                         <div class="form-group">
@@ -137,7 +137,7 @@
                                                         class="fa fa-plus"></i></a>
                                             <a href="{{url($deleteUrl)}}"
                                                class="btn btn-teal btn-slideright">Kembali</a>
-                                            <button type="submit" class="btn btn-success btn-slideright">{{$upd_mode === 'create' ? 'Tambah' : 'Ubah'}}</button>
+                                            <button type="submit" class="btn btn-success btn-slideright submit">Submit</button>
                                         </div>
                                     </div>
                                 </div><!-- /.form-body -->

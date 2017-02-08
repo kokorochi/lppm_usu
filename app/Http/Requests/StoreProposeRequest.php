@@ -29,39 +29,48 @@ class StoreProposeRequest extends FormRequest {
      */
     public function rules()
     {
-        return [
-            //Check Dedication Partner
-            'partner_name.*'          => 'required',
-            'partner_territory.*'     => 'required',
-            'partner_city.*'          => 'required',
-            'partner_province.*'      => 'required',
-            'partner_distance.*'      => 'required',
-            'file_partner_contract.*' => 'required|mimes:pdf',
+        if ($this->submit_button === 'save')
+        {
+            return [
+                //Check Dedication Partner
+                'partner_name.*'          => 'required',
+                'partner_territory.*'     => 'required',
+                'partner_city.*'          => 'required',
+                'partner_province.*'      => 'required',
+                'partner_distance.*'      => 'required',
+                'file_partner_contract.*' => 'required|mimes:pdf',
 
-            'own-years'          => 'numeric',
-            'own-member'         => 'numeric',
-            //End Check Dedication Partner
+                'own-years'          => 'numeric',
+                'own-member'         => 'numeric',
+                //End Check Dedication Partner
 
-            //Check Member
-            'member_display.*'   => 'required',
-            'member_nidn.*'      => 'required',
-            //End Check Member
+                //Check Member
+                'member_display.*'   => 'required',
+                'member_nidn.*'      => 'required',
+                //End Check Member
 
-            //Check Detail
-            'faculty_code'       => 'required',
-            'title'              => 'required|max:100',
-            'total_amount'       => 'required',
-            'areas_of_expertise' => 'required',
-            'time_period'        => 'required|max:2',
-            'address'            => 'required',
-            //End Check Detail
+                //Check Detail
+                'faculty_code'       => 'required',
+                'title'              => 'required|max:100',
+                'output_type'        => 'required',
+                'total_amount'       => 'required',
+                'areas_of_expertise' => 'required',
+                'time_period'        => 'required|max:2',
+                'address'            => 'required',
+                //End Check Detail
 
-            //Check Upload
+                //Check Upload
 //            'file_partner_contract' => 'required|mimes:pdf',
-            'file_propose'       => 'mimes:pdf',
-            'file_propose_final' => 'mimes:pdf'
-            //End Check Detail
-        ];
+                'file_propose'       => 'mimes:pdf',
+                'file_propose_final' => 'mimes:pdf'
+                //End Check Detail
+            ];
+        } else
+        {
+            $rules = [];
+        }
+
+        return $rules;
     }
 
     public function messages()
@@ -102,12 +111,15 @@ class StoreProposeRequest extends FormRequest {
 
     public function after($validator)
     {
-        $check = $this->checkBeforeSave();
-        if (count($check) > 0)
+        if ($this->submit_button === 'save')
         {
-            foreach ($check as $item)
+            $check = $this->checkBeforeSave();
+            if (count($check) > 0)
             {
-                $validator->errors()->add('sumErrors', $item);
+                foreach ($check as $item)
+                {
+                    $validator->errors()->add('sumErrors', $item);
+                }
             }
         }
     }
@@ -147,8 +159,8 @@ class StoreProposeRequest extends FormRequest {
             {
                 array_push($ret, 'Scheme yang dipilih tidak valid / sudah tidak dalam masa pengajuan proposal');
             }
-            if ($this->input('bank_account_name') === null ||
-                $this->input('bank_account_no') === null
+            if ($this->input('bank_account_name') === null || $this->input('bank_account_name') === '' ||
+                $this->input('bank_account_no') === null || $this->input('bank_account_no') === ''
             )
             {
                 array_push($ret, 'Informasi rekening bank harus diisi');
@@ -160,6 +172,22 @@ class StoreProposeRequest extends FormRequest {
                 if (! (count($this->input('member_nidn')) >= $period->min_member && count($this->input('member_nidn')) <= $period->max_member))
                 {
                     array_push($ret, 'Jumlah anggota tidak sesuai dengan data anggota yang diisi');
+                }
+                if ($this->total_amount !== '')
+                {
+                    $lv_total_amount = str_replace(',', '', $this->total_amount);
+                    if ($lv_total_amount > $period->total_amount) array_push($ret, 'Jumlah dana melebihi batas maksimal');
+                }
+                if ($period->allow_external == false)
+                {
+                    foreach ($this->member_nidn as $key => $item)
+                    {
+                        if ($this['external' . $key] == '1')
+                        {
+                            array_push($ret, 'Anggota dari luar USU tidak diperbolehkan pada scheme ini');
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -175,6 +203,7 @@ class StoreProposeRequest extends FormRequest {
         }
 
         //Check output type
+        $output_type_unique_ori = [];
         $valid_output = false;
         foreach ($this->input('output_type') as $key => $item)
         {
@@ -185,15 +214,16 @@ class StoreProposeRequest extends FormRequest {
                 {
                     array_push($ret, 'Luaran yang dipilih tidak valid');
                 }
+                array_push($output_type_unique_ori, $item);
             }
         }
         if (! $valid_output)
         {
             array_push($ret, 'Minimal 1 luaran yang dihasilkan harus diisi');
         }
-        $output_type_unique = $this->input('output_type');
+        $output_type_unique = $output_type_unique_ori;
         $output_type_unique = array_unique($output_type_unique);
-        if (count($output_type_unique) !== (count($this->input('output_type'))))
+        if (count($output_type_unique) !== (count($output_type_unique_ori)))
         {
             array_push($ret, 'Luaran yang dipilih tidak boleh duplikasi');
         }
@@ -201,9 +231,31 @@ class StoreProposeRequest extends FormRequest {
         //Check Member NIDN with SIMSDM Lecturer Table
         foreach ($this->input('member_nidn') as $key => $member_nidn)
         {
-            if (! Lecturer::where('employee_card_serial_number', $member_nidn)->exists())
+            if ($this->input('external' . $key) === '1')
             {
-                array_push($ret, 'Anggota yang dipilih tidak valid : ' . $this->input('member_display.' . $key));
+                if ($this->input('external_name')[$key] === '' ||
+                    $this->input('external_affiliation')[$key] === ''
+                )
+                {
+                    array_push($ret, 'Data dosen dari luar kurang lengkap (Nama dan Afiliasi harus diisi)');
+                }
+            } else
+            {
+                if ($this->input('member_nidn')[$key] === '' ||
+                    $this->input('member_display')[$key] === ''
+                )
+                {
+                    array_push($ret, 'Data dosen USU harus diisi dan dipilih via autocomplete');
+                }
+                $lecturer = Lecturer::where('employee_card_serial_number', $member_nidn)->first();
+                if ($lecturer === null)
+                {
+                    array_push($ret, 'Anggota yang dipilih tidak valid : ' . $this->input('member_display.' . $key));
+                }
+                if ($lecturer->email === null || $lecturer->email === '')
+                {
+                    array_push($ret, 'Anggota yang dipilih belum mengisi email di SIMSDM : ' . $this->input('member_display.' . $key));
+                }
             }
         }
 
@@ -214,10 +266,17 @@ class StoreProposeRequest extends FormRequest {
         }
 
         //Check Member Duplicate
-        $member_collection = $this->input('member_nidn');
+        $member_collection = [];
+        foreach ($this->input('member_nidn') as $key => $item)
+        {
+            if ($item != '' && $this->input('external' . $key) != '1')
+            {
+                array_push($member_collection, $item);
+            }
+        }
         array_push($member_collection, Auth::user()->nidn);
-        $member_collection = array_unique($member_collection);
-        if (count($member_collection) !== (count($this->input('member_nidn')) + 1))
+        $member_unique_collection = array_unique($member_collection);
+        if (count($member_unique_collection) !== count($member_collection))
         {
             array_push($ret, 'Anggota yang dipilih tidak boleh duplikasi');
         }
@@ -234,7 +293,7 @@ class StoreProposeRequest extends FormRequest {
                 $propose = $period->propose()->where('created_by', Auth::user()->nidn)->where('is_own', null)->get();
                 foreach ($propose as $item)
                 {
-                    $flow_status = $item->flowStatus()->where('status_code', '<>', 'UT')->first();
+                    $flow_status = $item->flowStatus()->where('status_code', '<>', 'UT')->where('status_code', '<>', 'SS')->first();
                     if ($flow_status !== null)
                     {
                         array_push($ret, '1 Dosen hanya bisa menjadi ( ketua penlitian sebanyak 1 kali dan menjadi anggota sebanyak 2 kali ) atau ( anggota sebanyak 3 kali ) dalam 1 tahun');
@@ -247,14 +306,18 @@ class StoreProposeRequest extends FormRequest {
                 $proposes = $period->propose()->where('created_by', '<>', Auth::user()->nidn)->where('is_own', null)->get();
                 foreach ($proposes as $propose)
                 {
-                    $member = $propose->member()->where('nidn', Auth::user()->nidn)->where('status', 'accepted')->first();
-                    if ($member !== null)
+                    $flow_status = $item->flowStatus()->where('status_code', '<>', 'UT')->where('status_code', '<>', 'SS')->first();
+                    if ($flow_status !== null)
                     {
-                        $i_as_member++;
-                        if ($i_as_member >= 3)
+                        $member = $propose->member()->where('nidn', Auth::user()->nidn)->where('status', 'accepted')->first();
+                        if ($member !== null)
                         {
-                            array_push($ret, '1 Dosen hanya bisa menjadi ( ketua penlitian sebanyak 1 kali dan menjadi anggota sebanyak 2 kali ) atau ( anggota sebanyak 3 kali ) dalam 1 tahun');
-                            break 2;
+                            $i_as_member++;
+                            if ($i_as_member >= 3)
+                            {
+                                array_push($ret, '1 Dosen hanya bisa menjadi ( ketua penlitian sebanyak 1 kali dan menjadi anggota sebanyak 2 kali ) atau ( anggota sebanyak 3 kali ) dalam 1 tahun');
+                                break 2;
+                            }
                         }
                     }
                 }

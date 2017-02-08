@@ -45,7 +45,7 @@
                         </div><!-- /.panel-heading -->
 
                         <div class="panel-body no-padding">
-                            <form class="form-horizontal form-bordered"
+                            <form class="form-horizontal form-bordered submit-form"
                                   action="{{$form_action}}"
                                   method="POST">
                                 <div class="form-body">
@@ -75,7 +75,7 @@
                                         <div class="col-sm-offset-3">
                                             <a href="{{url($deleteUrl)}}"
                                                class="btn btn-teal btn-slideright">Kembali</a>
-                                            <button type="submit" class="btn btn-success btn-slideright">
+                                            <button type="submit" class="btn btn-success btn-slideright submit">
                                                 {{$upd_mode === 'create' ? 'Tambah' : 'Ubah'}}
                                             </button>
                                         </div>
