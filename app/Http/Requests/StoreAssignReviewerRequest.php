@@ -71,6 +71,11 @@ class StoreAssignReviewerRequest extends FormRequest {
                 array_push($ret, 'Reviewer yang dipilih tidak boleh merupakan ketua/anggota pada proposal ini');
                 break;
             }
+            $lecturer = Lecturer::where('employee_card_serial_number', $item)->first();
+            if ($lecturer->email === null || $lecturer->email === '')
+            {
+                array_push($ret, 'Reviewer yang dipilih belum mengisi email di SIMSDM : ' . $item);
+            }
         }
 
         //Check Duplicate Reviewer

@@ -1,5 +1,8 @@
 <?php
 
+use App\Output_type;
+use App\StatusCode;
+use App\Conclusion;
 use Illuminate\Database\Seeder;
 
 class InitiateDedication1 extends Seeder
@@ -27,17 +30,17 @@ class InitiateDedication1 extends Seeder
 
 //      End Category_types
 
-//      Initiate Research Type
-        $research_type = new App\ResearchType();
+//      Initiate Dedication Type
+        $dedication_type = new \App\Dedication_type();
 
-        $research_type->create(
-            ['research_name' => 'Mono Tahun', 'created_by' => 'admin']
+        $dedication_type->create(
+            ['dedication_name' => 'Mono Tahun', 'created_by' => 'admin']
         );
-        $research_type->create(
-            ['research_name' => 'Multi Tahun', 'created_by' => 'admin']
+        $dedication_type->create(
+            ['dedication_name' => 'Multi Tahun', 'created_by' => 'admin']
         );
-        $research_type->create(
-            ['research_name' => 'Berbasis Pengabdian', 'created_by' => 'admin']
+        $dedication_type->create(
+            ['dedication_name' => 'Berbasis Pengabdian', 'created_by' => 'admin']
         );
 //      End Initiate Dedication_types
 

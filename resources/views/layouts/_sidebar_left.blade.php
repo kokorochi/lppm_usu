@@ -181,7 +181,7 @@ START @SIDEBAR LEFT
             <li {!! Request::is('approve-proposes','approve-proposes/*')? 'class="submenu active"' : 'class="submenu"' !!}>
                 <a href="javascript:void(0);">
                     <span class="icon"><i class="fa fa-check-square-o"></i></span>
-                    <span class="text">Approve Usulan</span>
+                    <span class="text">Usulan</span>
                     <span class="arrow"></span>
                     {!! Request::is('approve-proposes', 'approve-proposes/*') ? '<span class="selected"></span>' : null !!}
                 </a>
@@ -195,19 +195,19 @@ START @SIDEBAR LEFT
 
             <!-- Start navigation - Usulan -->
             {{--<li {!! Request::is('proposes','proposes/*')? 'class="submenu active"' : 'class="submenu"' !!}>--}}
-                {{--<a href="javascript:void(0);">--}}
-                    {{--<span class="icon"><i class="fa fa-file-powerpoint-o"></i></span>--}}
-                    {{--<span class="text">Usulan</span>--}}
-                    {{--<span class="arrow"></span>--}}
-                    {{--{!! Request::is('proposes', 'proposes/*') ? '<span class="selected"></span>' : null !!}--}}
-                {{--</a>--}}
-                {{--<ul>--}}
-                    {{--<li {!! Request::is('proposes','proposes/')? 'class="active"' : null !!}>--}}
-                        {{--<a href="{{url('proposes/')}}">List</a>--}}
-                    {{--</li>--}}
-                {{--</ul>--}}
+            {{--<a href="javascript:void(0);">--}}
+            {{--<span class="icon"><i class="fa fa-file-powerpoint-o"></i></span>--}}
+            {{--<span class="text">Usulan</span>--}}
+            {{--<span class="arrow"></span>--}}
+            {{--{!! Request::is('proposes', 'proposes/*') ? '<span class="selected"></span>' : null !!}--}}
+            {{--</a>--}}
+            {{--<ul>--}}
+            {{--<li {!! Request::is('proposes','proposes/')? 'class="active"' : null !!}>--}}
+            {{--<a href="{{url('proposes/')}}">List</a>--}}
             {{--</li>--}}
-            <!-- End navigation - Usulan -->
+            {{--</ul>--}}
+            {{--</li>--}}
+        <!-- End navigation - Usulan -->
 
             <!-- Start navigation - Dedication -->
             <li {!! Request::is('dedications','dedications/*')? 'class="submenu active"' : 'class="submenu"' !!}>
@@ -271,7 +271,7 @@ START @SIDEBAR LEFT
         @endcan
     <!-- End category - Lecturer -->
 
-    <!-- Start category - Reviewer -->
+        <!-- Start category - Reviewer -->
         @can('reviewer-menu')
             <li class="sidebar-category">
                 <span>Reviewer</span>

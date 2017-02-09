@@ -56,6 +56,7 @@ class AJAXController extends BlankonController {
 
 //        return json_encode($lecturer, JSON_PRETTY_PRINT);
         $lecturer = json_encode($lecturer, JSON_PRETTY_PRINT);
+
 //
         return response($lecturer, 200)->header('Content-Type', 'application/json');
     }
@@ -77,9 +78,19 @@ class AJAXController extends BlankonController {
         foreach ($proposes as $propose)
         {
             $status_code = $propose->flowStatus()->orderBy('item', 'desc')->first()->status_code;
-            foreach ($status_codes as $item)
+            $propose->status_code = $status_code;
+            if ($status_codes !== null)
             {
-                if ($status_code === $item)
+                foreach ($status_codes as $item)
+                {
+                    if ($status_code === $item)
+                    {
+                        $proposes_final->add($propose);
+                    }
+                }
+            } else
+            {
+                if ($status_code !== 'SS') //Skip if status is Simpan Sementara
                 {
                     $proposes_final->add($propose);
                 }
@@ -105,7 +116,13 @@ class AJAXController extends BlankonController {
                 $data['data'][$i][4] = '<td class="text-center"><a href="' . url('reviewers/assign', $propose->id) . '" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Assign"><i class="fa fa-plus-circle"></i></a></td>';
             } elseif ($type === 'APPROVE')
             {
-                $data['data'][$i][4] = '<td class="text-center"><a href="' . url('approve-proposes', $propose->id) . '/approve' . '" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Approve"><i class="fa fa-check-square-o"></i></a></td>';
+                if ($propose->status_code === 'RS')
+                {
+                    $data['data'][$i][4] = '<td class="text-center"><a href="' . url('approve-proposes', $propose->id) . '/approve' . '" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Approve"><i class="fa fa-check-square-o"></i></a></td>';
+                } else
+                {
+                    $data['data'][$i][4] = '<td class="text-center"><a href="' . url('approve-proposes', $propose->id) . '/display' . '" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Detail"><i class="fa fa-search-plus"></i></a></td>';
+                }
             }
 
             $i++;
@@ -214,10 +231,16 @@ class AJAXController extends BlankonController {
                 $data['data'][$i][4] = '<td class="text-center"><a href="' . url('dedications', $dedication->id) . '/approve' . '" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Approve"><i class="fa fa-check-square-o"></i></a></td>';
             } else
             {
-                $data['data'][$i][4] = '<td class="text-center"><a href="' . url('review-proposes', $dedication->id) . '/dedication-display' . '" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Approve"><i class="fa fa-search-plus"></i></a></td>';
+                $data['data'][$i][4] = '<td class="text-center"><a href="' . url('review-proposes', $dedication->id) . '/dedication-display' . '" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Display"><i class="fa fa-search-plus"></i></a></td>';
             }
             $i++;
         }
+        $count_data = count($data);
+        if ($count_data == 0)
+        {
+            $data['data'] = [];
+        }
+        $data['iTotalRecords'] = $data['iTotalDisplayRecords'] = $count_data;
         $data = json_encode($data, JSON_PRETTY_PRINT);
 
         return response($data, 200)->header('Content-Type', 'application/json');

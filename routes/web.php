@@ -140,6 +140,7 @@ Route::get('review-proposes/{id}/dedication-display', 'ReviewProposeController@d
 Route::get('approve-proposes/', 'ApproveProposeController@index');
 Route::get('approve-proposes/{id}/approve', 'ApproveProposeController@approve');
 Route::put('approve-proposes/{id}/approve', 'ApproveProposeController@approveUpdate');
+Route::get('approve-proposes/{id}/display', 'ApproveProposeController@display');
 // End Approve Proposes Route
 
 // Start Dedication Route

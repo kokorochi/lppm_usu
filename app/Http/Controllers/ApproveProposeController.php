@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Auths;
 use App\Dedication;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;

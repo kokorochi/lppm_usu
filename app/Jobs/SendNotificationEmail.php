@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\TestMail;
+use App\Mail\NotificationEmail;
 use App\Propose;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -36,7 +36,7 @@ class SendNotificationEmail implements ShouldQueue {
     {
         if ($this->recipients != '' && $this->recipients != null)
         {
-            Mail::to($this->recipients)->send(new TestMail($this->email));
+            Mail::to($this->recipients)->send(new NotificationEmail($this->email));
         }
     }
 }
