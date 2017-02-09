@@ -81,6 +81,26 @@ $(document).ready(function () {
         }
     });
 
+    for (var i = 0; i < 10; i++) {
+        if ($("input#external" + i).is(":checked")) {
+            // console.log($(this).closest('.form-group').find('.external-member-wrapper').length);
+            $("input#external" + i).closest('.form-group').find('.external-member-wrapper').show();
+            $("input#external" + i).closest('.form-group').find('.internal-member-wrapper').hide();
+        } else {
+            $("input#external" + i).closest('.form-group').find('.external-member-wrapper').hide();
+            $("input#external" + i).closest('.form-group').find('.internal-member-wrapper').show();
+        }
+    }
+    $("input.external-checkbox").on("click", function () {
+        if ($(this).is(":checked")) {
+            $(this).closest('.form-group').find('.external-member-wrapper').show();
+            $(this).closest('.form-group').find('.internal-member-wrapper').hide();
+        } else {
+            $(this).closest('.form-group').find('.external-member-wrapper').hide();
+            $(this).closest('.form-group').find('.internal-member-wrapper').show();
+        }
+    });
+
     $("select[name='period_id']").change(function () {
         $.get(baseUrl + '/ajax/periods/get', {period_id: $(this).val()}, function (data) {
             // data = JSON.parse(data);
@@ -102,14 +122,47 @@ $(document).ready(function () {
         })
     });
 
-    $(".input-score").keyup(function () {
+    $(".input-score").change(function () {
         if ($.isNumeric($(this).val())) {
-            // $(this).closest("output-score").val('2');
             var quality = $(this).parent().parent().parent().find("input[name='quality[]']").val();
             $(this).parent().parent().parent().find(".output-score").val($(this).val() * quality);
         }
-        // console.log($.isNumeric($(this).val()));
     });
+
+    $(".add-dedication-general-button").click(function (e) {
+        e.preventDefault();
+        countChild = $(".dedication-general-wrapper div.form-group").length;
+        x = countChild;
+        if (x < max_fields) { //max input box allowed
+            x++; //text box increment
+            var dedication_clone = $('.dedication-general-wrapper').find('div.form-group:last').clone();
+            var idx = dedication_clone.find('input[name^=status]:first').attr("name").substring(7,8);
+            idx++;
+            dedication_clone.find('input[name^=status]').attr("name", "status[" + idx + "]");
+            dedication_clone.find('input[id^=radio-draft]').attr("id", "radio-draft[" + idx + "]");
+            dedication_clone.find('label[for^=radio-draft]').attr("for", "radio-draft[" + idx + "]");
+            dedication_clone.find('input[id^=radio-submitted]').attr("id", "radio-submitted[" + idx + "]");
+            dedication_clone.find('label[for^=radio-submitted]').attr("for", "radio-submitted[" + idx + "]");
+            dedication_clone.find('input[id^=radio-accepted]').attr("id", "radio-accepted[" + idx + "]");
+            dedication_clone.find('label[for^=radio-accepted]').attr("for", "radio-accepted[" + idx + "]");
+            dedication_clone.find('input[id^=radio-publish]').attr("id", "radio-publish[" + idx + "]");
+            dedication_clone.find('label[for^=radio-publish]').attr("for", "radio-publish[" + idx + "]");
+            dedication_clone.find('input[name^=output_description]').attr("value", "");
+            dedication_clone.find('input[name^=url_address]').attr("value", "");
+            $('.dedication-general-wrapper').append(dedication_clone);
+            BlankonApp.handleSound();
+        }
+    });
+
+    $('.dedication-general-wrapper').on("click", ".remove_field", function (e) { //user click on remove text
+        e.preventDefault();
+        countChild = $(".dedication-general-wrapper div.form-group").length;
+        x = countChild;
+        if (x > 1) {
+            $(this).parents('div.form-group').remove();
+            x--;
+        }
+    })
 
     $(".add-dedication-service-button").click(function (e) {
         e.preventDefault();
@@ -145,7 +198,15 @@ $(document).ready(function () {
         }
     });
 
-    $("form#submit-form").submit(function (e) {
-        $(this).find('button#submit').attr('disabled', 'disabled');
+    $("form.submit-form").submit(function (e) {
+        var form = $(this);
+        $(this).find('button[type="submit"]').each(function (index) {
+            // Create a disabled clone of the submit button
+            $(this).clone(false).removeAttr('id').prop('disabled', true).insertBefore($(this));
+
+            // Hide the actual submit button and move it to the beginning of the form
+            $(this).hide();
+            form.prepend($(this));
+        });
     });
 });

@@ -40,11 +40,17 @@ class ReviewProposeController extends BlankonController {
         array_push($this->css['pages'], 'global/plugins/bower_components/datatables/css/dataTables.bootstrap.css');
         array_push($this->css['pages'], 'global/plugins/bower_components/datatables/css/datatables.responsive.css');
         array_push($this->css['pages'], 'global/plugins/bower_components/jasny-bootstrap-fileinput/css/jasny-bootstrap-fileinput.min.css');
+        array_push($this->css['pages'], 'global/plugins/bower_components/chosen_v1.2.0/chosen.min.css');
 
         array_push($this->js['plugins'], 'global/plugins/bower_components/datatables/js/jquery.dataTables.min.js');
         array_push($this->js['plugins'], 'global/plugins/bower_components/datatables/js/dataTables.bootstrap.js');
         array_push($this->js['plugins'], 'global/plugins/bower_components/datatables/js/datatables.responsive.js');
         array_push($this->js['plugins'], 'global/plugins/bower_components/jasny-bootstrap-fileinput/js/jasny-bootstrap.fileinput.min.js');
+        array_push($this->js['plugins'], 'global/plugins/bower_components/jquery.inputmask/dist/jquery.inputmask.bundle.min.js');
+        array_push($this->js['plugins'], 'global/plugins/bower_components/chosen_v1.2.0/chosen.jquery.min.js');
+
+        array_push($this->js['scripts'], 'admin/js/pages/blankon.form.advanced.js');
+        array_push($this->js['scripts'], 'admin/js/pages/blankon.form.element.js');
 
         array_push($this->js['scripts'], 'admin/js/datatable-custom.js');
         array_push($this->js['scripts'], 'admin/js/customize.js');
@@ -101,6 +107,7 @@ class ReviewProposeController extends BlankonController {
         {
             $review_propose = new ReviewPropose;
             $review_propose->disabled = '';
+            $review_propose->recommended_amount = $propose->total_amount;
             $appraisal = $propose->period()->first()->appraisal()->first();
             $appraisals_i = $appraisal->appraisal_i()->get();
             $review_proposes_i = new Collection;
@@ -108,8 +115,10 @@ class ReviewProposeController extends BlankonController {
             {
                 $review_propose_i = new ReviewProposesI;
                 $review_propose_i->item = $item->item;
+                $review_propose_i->score = 1;
                 $review_propose_i->aspect = $item->aspect;
                 $review_propose_i->quality = $item->quality;
+                $review_propose_i->final_score = $item->quality;
                 $review_propose_i->disabled = '';
                 $review_proposes_i->add($review_propose_i);
             }
@@ -153,6 +162,7 @@ class ReviewProposeController extends BlankonController {
         $review_propose->nidn = Auth::user()->nidn;
         $review_propose->suggestion = $request->suggestion;
         $review_propose->conclusion_id = $request->conclusion_id;
+        $review_propose->recommended_amount = str_replace(',', '', $request->recommended_amount);
 
         $review_proposes_i = new Collection();
         foreach ($appraisals_i as $key => $appraisal_i)
@@ -320,7 +330,15 @@ class ReviewProposeController extends BlankonController {
         $members = $propose->member()->get();
         foreach ($members as $member)
         {
-            $member['member_display'] = Member::where('id', $member->id)->where('item', $member->item)->first()->lecturer()->first()->full_name;
+            if ($member->external === '1')
+            {
+                $external_member = $member->externalMember()->first();
+                $member->external_name = $external_member->name;
+                $member->external_affiliation = $external_member->affiliation;
+            } else
+            {
+                $member['member_display'] = Member::where('id', $member->id)->where('item', $member->item)->first()->lecturer()->first()->full_name;
+            }
         }
         $member = $propose->member()->first();
         $lecturer = Lecturer::where('employee_card_serial_number', $propose->created_by)->first();

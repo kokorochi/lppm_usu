@@ -3,7 +3,7 @@
 $errors->has('sumErrors')
 )
     @php
-        if(old('revision_text')) $dedication_output_guidebook->revision_text = old('revision_text');
+        if(old('revision_text')) $dedication_output_revision->revision_text = old('revision_text');
     @endphp
 @endif
 {{--Get Old Value And Place It To VARIABLE--}}
@@ -13,7 +13,7 @@ $errors->has('sumErrors')
         <div class="panel rounded shadow">
             <div class="panel-heading">
                 <div class="pull-left">
-                    <h3 class="panel-title">Luaran (Buku Panduan)</h3>
+                    <h3 class="panel-title">Luaran</h3>
                 </div>
                 <div class="pull-right">
                     <a class="btn btn-sm" data-action="collapse" data-container="body" data-toggle="tooltip"
@@ -25,7 +25,7 @@ $errors->has('sumErrors')
                 <form action="{{url($deleteUrl, $dedication->id) . '/approve'}}" method="post"
                       class="form-body form-horizontal form-bordered submit-form">
                     <div class="form-group">
-                        <label for="title" class="col-sm-4 col-md-3 control-label">Disetujui</label>
+                        <label for="is_approved" class="col-sm-4 col-md-3 control-label">Disetujui</label>
                         <div class="col-sm-7">
                             <div class="rdio rdio-theme circle">
                                 <input id="radio-yes" value="yes" type="radio" name="is_approved" {{ ( old('is_approved') === "yes" || old('is_approved') === null ) ? 'checked="checked"' : ''}}>
@@ -36,19 +36,8 @@ $errors->has('sumErrors')
                                 <label for="radio-no">Tidak</label>
                             </div>
                         </div>
-                    </div>
-                    <div id="revision-text-wrapper">
-                        <div class="form-group">
-                            <label for="title" class="col-sm-4 col-md-3 control-label">Alasan Perbaikan</label>
-                            <div class="col-sm-7">
-                            <textarea name="revision_text" class="form-control input-sm"
-                                      rows="3">{{$dedication_output_revision->revision_text}}</textarea>
-                                @if($errors->has('revision_text'))
-                                    <label class="error" for="revision_text" style="display: inline-block;">
-                                        {{ $errors->first('revision_text') }}
-                                    </label>
-                                @endif
-                            </div>
+                        <div id="revision-text-wrapper">
+                            @include('form-input.dedication-approve-revisiontext')
                         </div>
                     </div>
 

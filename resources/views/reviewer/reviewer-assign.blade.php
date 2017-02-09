@@ -38,7 +38,7 @@
 
             @include('form-input.propose-upload')
 
-            <form class="submit-form" action="{{url('reviewers/assign', $propose->id)}}" method="POST">
+            <form class="submit-form" action="{{url('reviewers/assign', $propose_relation->propose->id)}}" method="POST">
 
                 @include('form-input.propose-reviewer')
 
@@ -47,7 +47,9 @@
                 <div class="form-footer">
                     <div class="col-sm-offset-4 col-md-offset-3">
                         <a href="{{url($deleteUrl) . '/assign'}}" class="btn btn-teal btn-slideright">Kembali</a>
-                        <button type="submit" class="btn btn-success btn-slideright submit">Submit</button>
+                        @if($disable_reviewer === false)
+                            <button type="submit" class="btn btn-success btn-slideright submit">Simpan</button>
+                        @endif
                     </div><!-- /.col-sm-offset-3 -->
                 </div><ss!-- /.form-footer -->
             </form>

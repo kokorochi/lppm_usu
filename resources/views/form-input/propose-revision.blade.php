@@ -3,7 +3,7 @@
 $errors->has('final_amount') || old('final_amount')
 )
     @php
-        $propose->final_amount = old('final_amount');
+        $propose_relation->propose->final_amount = old('final_amount');
     @endphp
 @endif
 {{--Get Old Value And Place It To VARIABLE--}}
@@ -29,7 +29,7 @@ $errors->has('final_amount') || old('final_amount')
                         <div class="col-sm-7">
                             <input name="final_amount" class="form-control input-sm" type="text"
                                    data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'rightAlign': false"
-                                   value="{{$propose->final_amount}}" {{$disable_final_amount}}>
+                                   value="{{$propose_relation->propose->final_amount}}" {{$disable_final_amount}}>
                             @if($errors->has('final_amount'))
                                 <label class="error" for="final_amount" style="display: inline-block;">
                                     {{ $errors->first('final_amount') }}
@@ -42,14 +42,15 @@ $errors->has('final_amount') || old('final_amount')
                             <label class="control-label col-sm-4 col-md-3">Unggah Usulan (Perbaikan)</label>
                             <div class="col-sm-7">
                                 <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                    <div class="form-control input-sm" data-trigger="fileinput"><i
-                                                class="glyphicon glyphicon-file fileinput-exists"></i> <span
-                                                class="fileinput-filename"></span></div>
-                                            <span class="input-group-addon btn btn-success btn-file">
-                                                <span class="fileinput-new">Select file</span>
-                                                <span class="fileinput-exists">Change</span>
-                                                <input type="file" name="file_propose_final">
-                                            </span>
+                                    <div class="form-control input-sm" data-trigger="fileinput">
+                                        <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                        <span class="fileinput-filename"></span>
+                                    </div>
+                                    <span class="input-group-addon btn btn-success btn-file">
+                                        <span class="fileinput-new">Select file</span>
+                                        <span class="fileinput-exists">Change</span>
+                                        <input type="file" name="file_propose_final">
+                                    </span>
                                     <a href="#" class="input-group-addon btn btn-danger fileinput-exists"
                                        data-dismiss="fileinput">Remove</a>
                                 </div>
@@ -61,19 +62,19 @@ $errors->has('final_amount') || old('final_amount')
                             </div>
                         </div><!-- /.form-group -->
                     @endif
-                    @if($propose->file_propose_final !== null)
+                    @if($propose_relation->propose->file_propose_final !== null)
                         <div class="form-group">
                             <label class="control-label col-sm-4 col-md-3">Unduh Usulan</label>
                             <div class="col-sm-7 mb-10">
                                 <div class="input-group">
                                     <input name="file_propose_final" class="form-control input-sm"
                                            type="text" disabled
-                                           value="{{ $propose->file_propose_final_ori }}">
-                                            <span class="input-group-btn">
-                                            {{--<button type="button" class="btn btn-default">Go!</button>--}}
-                                                <a href="{{url('proposes', $propose->id) . '/download/3' }}"
-                                                   class="btn btn-primary btn-sm">Unduh</a>
-                                            </span>
+                                           value="{{ $propose_relation->propose->file_propose_final_ori }}">
+                                    <span class="input-group-btn">
+                                    {{--<button type="button" class="btn btn-default">Go!</button>--}}
+                                        <a href="{{url('proposes', $propose_relation->propose->id) . '/download/3' }}"
+                                           class="btn btn-primary btn-sm">Unduh</a>
+                                    </span>
                                 </div>
                             </div>
                         </div>

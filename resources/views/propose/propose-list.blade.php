@@ -69,26 +69,34 @@
                                                 <td class="text-center border-right">{{ $propose->flowStatus()->orderBy('item', 'desc')->first()
                                                    ->statusCode()->first()->description }}</td>
                                                 <td class="text-center">
-                                                    <a href="{{url($deleteUrl . '/' . $propose->id .'/edit')}}"
-                                                       class="btn btn-primary btn-xs" data-toggle="tooltip"
-                                                       data-placement="top" data-original-title="Edit">
-                                                        <i class="fa fa-pencil"></i>
-                                                    </a>
-                                                    @if($status_code === 'PU')
-                                                        <a href="{{url($deleteUrl . '/' . $propose->id . '/revision')}}"
-                                                           class="btn btn-success btn-xs btn-sl" data-placement="top"
-                                                           data-original-title="Revision" data-toggle="tooltip">
-                                                            <i class="fa fa-wrench"></i>
+                                                    @if($propose->created_by === Auth::user()->nidn)
+                                                        <a href="{{url($deleteUrl . '/' . $propose->id .'/edit')}}"
+                                                           class="btn btn-primary btn-xs" data-toggle="tooltip"
+                                                           data-placement="top" data-original-title="Edit">
+                                                            <i class="fa fa-pencil"></i>
                                                         </a>
-                                                    @endif
-                                                    @if($status_code === 'VA' ||
-                                                        $status_code === 'UU' ||
-                                                        $status_code === 'PR')
-                                                        <a href="#" class="modal_delete btn btn-danger btn-xs"
-                                                           data-id="{{$propose->id}}" data-placement="top"
-                                                           data-original-title="Delete" data-toggle="modal"
-                                                           data-target=".bs-example-modal-sm">
-                                                            <i class="fa fa-times"></i>
+                                                        @if($status_code === 'PU')
+                                                            <a href="{{url($deleteUrl . '/' . $propose->id . '/revision')}}"
+                                                               class="btn btn-success btn-xs btn-sl" data-placement="top"
+                                                               data-original-title="Perbaikan" data-toggle="tooltip">
+                                                                <i class="fa fa-wrench"></i>
+                                                            </a>
+                                                        @endif
+                                                        @if($status_code === 'VA' ||
+                                                            $status_code === 'UU' ||
+                                                            $status_code === 'PR')
+                                                            <a href="#" class="modal_delete btn btn-danger btn-xs"
+                                                               data-id="{{$propose->id}}" data-placement="top"
+                                                               data-original-title="Delete" data-toggle="modal"
+                                                               data-target=".bs-example-modal-sm">
+                                                                <i class="fa fa-times"></i>
+                                                            </a>
+                                                        @endif
+                                                    @else
+                                                        <a href="{{url($deleteUrl . '/' . $propose->id .'/display')}}"
+                                                           class="btn btn-primary btn-xs" data-toggle="tooltip"
+                                                           data-placement="top" data-original-title="Detail">
+                                                            <i class="fa fa-info"></i>
                                                         </a>
                                                     @endif
                                                 </td>

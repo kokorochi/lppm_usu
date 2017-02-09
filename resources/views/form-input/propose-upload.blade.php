@@ -1,13 +1,3 @@
-{{--Get Old Value And Place It To VARIABLE--}}
-{{--@if(--}}
-{{--$errors->has('file_partner_contract') || old('file_partner_contract')--}}
-{{--)--}}
-{{--@php--}}
-{{--$propose->file_partner_contract = old('file_partner_contract');--}}
-{{--@endphp--}}
-{{--@endif--}}
-{{--Get Old Value And Place It To VARIABLE--}}
-
 <div class="row">
     <div class="col-md-12">
         <div class="panel">
@@ -24,17 +14,17 @@
             <div class="panel-body no-padding">
                 <div class="form-body form-horizontal form-bordered">
                     @if($disabled === 'disabled')
-                        @if($propose->file_propose !== null)
+                        @if($propose_relation->propose->file_propose !== null)
                             <div class="form-group">
                                 <label class="control-label col-sm-4 col-md-3">Unduh Usulan</label>
                                 <div class="col-sm-7 mb-10">
                                     <div class="input-group">
                                         <input name="file_partner_contract[]" class="form-control input-sm"
                                                type="text" disabled
-                                               value="{{ $propose->file_propose_ori }}">
+                                               value="{{ $propose_relation->propose->file_propose_ori }}">
                                         <span class="input-group-btn">
                                         {{--<button type="button" class="btn btn-default">Go!</button>--}}
-                                            <a href="{{url('proposes', $propose->id) . '/download/2' }}"
+                                            <a href="{{url('proposes', $propose_relation->propose->id) . '/download/2' }}"
                                                class="btn btn-primary btn-sm">Unduh</a>
                                         </span>
                                     </div>

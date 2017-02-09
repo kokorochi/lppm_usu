@@ -41,24 +41,13 @@ $errors->has('nidn.' . $ctr_old) || old('nidn.' . $ctr_old) )
                         @foreach($dedication_reviewers as $key => $dedication_reviewer)
                             <div class="form-group">
                                 <label for="nidn[]" class="col-sm-4 col-md-3 control-label">Reviewer</label>
-                                <div class="col-sm-6 input-icon right">
-                                    <input name="display[]" type="text"
-                                           class="input-reviewer-auto form-control input-sm mb-15"
-                                           value="{{$dedication_reviewer->display}}" {{$dedication_reviewer->disabled}}/>
-                                    <input name="nidn[]" type="text" class="input-reviewer-value" hidden="hidden"
-                                           value="{{$dedication_reviewer->nidn}}" {{$dedication_reviewer->disabled}}/>
-                                    @if($errors->has('display.' . $key))
-                                        <label class="error" for="display[]" style="display: inline-block;">
-                                            {{ $errors->first('display.' . $key) }}
-                                        </label>
-                                    @endif
-                                    @if($errors->has('nidn.' . $key))
-                                        <label class="error" for="nidn[]" style="display: inline-block;">
-                                            Pemilihan reviewer harus dilakukan via autocomplete
-                                        </label>
-                                    @endif
+                                <div class="col-sm-6 input-icon right chosen-select-container">
+                                    <select name="nidn[]" class="chosen-select" {{$disable_reviewer === true ? 'disabled' : ''}}>
+                                        @foreach($reviewers as $reviewer)
+                                            <option value="{{$reviewer->nidn}}" {{$reviewer->nidn === $dedication_reviewer->nidn ? 'selected' : ''}}>{{$reviewer->full_name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-
                                 @if($disable_reviewer !== true)
                                     <div class="col-sm-1">
                                         <a href="#" class="remove_field btn btn-sm btn-danger btn-stroke">

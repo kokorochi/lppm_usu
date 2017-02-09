@@ -49,52 +49,50 @@
                                             <th class="text-center border-right">Id</th>
                                             <th class="text-center">Judul</th>
                                             <th class="text-center">Scheme</th>
-                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Status Pengabdian</th>
+                                            <th class="text-center">Status Luaran</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($dedications as $dedication)
-                                            @php($propose = $dedication->propose()->first())
-                                            @php($status_code = $propose->flowStatus()->orderBy('item', 'desc')->first()->status_code)
-                                            <tr>
-                                                <td class="text-center border-right">{{ $dedication->id }}</td>
-                                                <td class="text-center border-right">{{ $propose->title }}</td>
-                                                <td class="text-center border-right">
-                                                    @if($propose->is_own === null)
-                                                        {{ $propose->period()->first()->scheme }}
-                                                    @else
-                                                        {{ $propose->proposesOwn()->first()->scheme }}
-                                                    @endif
-                                                </td>
-                                                <td class="text-center border-right">{{ $propose->flowStatus()->orderBy('item', 'desc')->first()
-                                                   ->statusCode()->first()->description }}</td>
-                                                <td class="text-center">
-                                                    <a href="{{url($deleteUrl . '/' . $dedication->id .'/edit')}}"
-                                                       class="btn btn-primary btn-xs" data-toggle="tooltip"
-                                                       data-placement="top" data-original-title="Edit">
-                                                        <i class="fa fa-pencil"></i>
-                                                    </a>
-                                                    @if($status_code === 'UL' ||
-                                                    $status_code === 'VL' ||
-                                                    $status_code === 'RL' ||
-                                                    $status_code === 'PS')
+                                            @foreach($dedications as $dedication)
+                                                @php($propose = $dedication->propose()->first())
+                                                @php($status_code = $propose->flowStatus()->orderBy('item', 'desc')->first()->status_code)
+                                                <tr>
+                                                    <td class="text-center border-right">{{ $dedication->id }}</td>
+                                                    <td class="text-center border-right">{{ $propose->title }}</td>
+                                                    <td class="text-center border-right">
+                                                        @if($propose->is_own === null)
+                                                            {{ $propose->period()->first()->scheme }}
+                                                        @else
+                                                            {{ $propose->proposesOwn()->first()->scheme }}
+                                                        @endif
+                                                    </td>
+                                                    <td class="text-center border-right">{{ $propose->flowStatus()->orderBy('item', 'desc')->first()
+                                                       ->statusCode()->first()->description }}</td>
+                                                    <td class="text-center">{!!$dedication->output_status!!}</td>
+                                                    <td class="text-center">
+                                                        <a href="{{url($deleteUrl . '/' . $dedication->id .'/edit')}}"
+                                                           class="btn btn-primary btn-xs" data-toggle="tooltip"
+                                                           data-placement="top" data-original-title="Ubah">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
                                                         <a href="{{url($deleteUrl . '/' . $dedication->id .'/output')}}"
                                                            class="btn btn-success btn-xs" data-toggle="tooltip"
                                                            data-placement="top" data-original-title="Unggah Luaran">
                                                             <i class="fa fa-upload"></i>
                                                         </a>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                         <tfoot>
                                         <tr>
                                             <th class="text-center border-right">Id</th>
                                             <th class="text-center">Judul</th>
                                             <th class="text-center">Scheme</th>
-                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Status Pengabdian</th>
+                                            <th class="text-center">Status Luaran</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                         </tfoot>

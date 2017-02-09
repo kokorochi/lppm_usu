@@ -9,15 +9,15 @@ $errors->has('bank_account_name') || old('bank_account_name') ||
 $errors->has('bank_account_no') || old('bank_account_no')
 )
     @php
-        $propose->faculty_code          = old('faculty_code');
-        $propose->title                 = old('title');
-        $propose->total_amount          = old('total_amount');
-        $propose->time_period           = old('time_period');
-        $propose->bank_account_name     = old('bank_account_name');
-        $propose->bank_account_no       = old('bank_account_no');
-        $propose->address               = old('address');
-        $propose->student_involved      = old('student_involved');
-        $propose->areas_of_expertise    = old('areas_of_expertise');
+        $propose_relation->propose->faculty_code          = old('faculty_code');
+        $propose_relation->propose->title                 = old('title');
+        $propose_relation->propose->total_amount          = old('total_amount');
+        $propose_relation->propose->time_period           = old('time_period');
+        $propose_relation->propose->bank_account_name     = old('bank_account_name');
+        $propose_relation->propose->bank_account_no       = old('bank_account_no');
+        $propose_relation->propose->address               = old('address');
+        $propose_relation->propose->student_involved      = old('student_involved');
+        $propose_relation->propose->areas_of_expertise    = old('areas_of_expertise');
     @endphp
 @endif
 {{--Get Old Value And Place It To VARIABLE--}}
@@ -41,8 +41,8 @@ $errors->has('bank_account_no') || old('bank_account_no')
                         <label for="faculty_code" class="col-sm-4 col-md-3 control-label">Fakultas</label>
                         <div class="col-sm-7">
                             <select name="faculty_code" class="form-control input-sm" {{$disabled}}>
-                                @foreach($faculties as $faculty)
-                                    <option value="{{$faculty->faculty_code}}" {{$propose->faculty_code === $faculty->faculty_code ? 'selected' : null}}>{{$faculty->faculty_name}}</option>
+                                @foreach($propose_relation->faculties as $faculty)
+                                    <option value="{{$faculty->faculty_code}}" {{$propose_relation->propose->faculty_code === $faculty->faculty_code ? 'selected' : null}}>{{$faculty->faculty_name}}</option>
                                 @endforeach
                             </select>
                         </div><!-- /.col-sm-7 -->
@@ -53,7 +53,7 @@ $errors->has('bank_account_no') || old('bank_account_no')
                         <label for="title" class="col-sm-4 col-md-3 control-label">Judul Pengabdian</label>
                         <div class="col-sm-7">
                             <input name="title" class="form-control input-sm" type="text"
-                                   value="{{ $propose->title }}" {{$disabled}}>
+                                   value="{{ $propose_relation->propose->title }}" {{$disabled}}>
                             @if($errors->has('title'))
                                 <label class="error" for="title" style="display: inline-block;">
                                     {{ $errors->first('title') }}
@@ -67,7 +67,7 @@ $errors->has('bank_account_no') || old('bank_account_no')
                         <div class="col-sm-7">
                             <input name="total_amount" class="form-control input-sm" type="text"
                                    data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'rightAlign': false"
-                                   value="{{ $propose->total_amount }}" {{$disabled}}>
+                                   value="{{ $propose_relation->propose->total_amount }}" {{$disabled}}>
                             @if($errors->has('total_amount'))
                                 <label class="error" for="total_amount" style="display: inline-block;">
                                     {{ $errors->first('total_amount') }}
@@ -82,7 +82,7 @@ $errors->has('bank_account_no') || old('bank_account_no')
                         <div class="col-sm-7">
                             <input name="time_period" class="form-control input-sm" type="text"
                                    maxlength="2" data-inputmask="'alias': 'decimal', 'rightAlign': false"
-                                   value="{{ $propose->time_period }}" {{$disabled}}>
+                                   value="{{ $propose_relation->propose->time_period }}" {{$disabled}}>
                             @if($errors->has('time_period'))
                                 <label class="error" for="time_period" style="display: inline-block;">
                                     {{ $errors->first('time_period') }}
@@ -97,7 +97,7 @@ $errors->has('bank_account_no') || old('bank_account_no')
                         <div class="col-sm-7">
                             <input name="student_involved" class="form-control input-sm" type="text"
                                    maxlength="2" data-inputmask="'alias': 'decimal', 'rightAlign': false"
-                                   value="{{ $propose->student_involved }}" {{$disabled}}>
+                                   value="{{ $propose_relation->propose->student_involved }}" {{$disabled}}>
                             @if($errors->has('time_period'))
                                 <label class="error" for="student_involved" style="display: inline-block;">
                                     {{ $errors->first('student_involved') }}
@@ -110,7 +110,7 @@ $errors->has('bank_account_no') || old('bank_account_no')
                         <label for="address" class="col-sm-4 col-md-3 control-label">Alamat Kantor/Faks/Telepon</label>
                         <div class="col-sm-7">
                             <input name="address" class="form-control input-sm" type="text"
-                                   value="{{ $propose->address }}" {{$disabled}}>
+                                   value="{{ $propose_relation->propose->address }}" {{$disabled}}>
                             @if($errors->has('address'))
                                 <label class="error" for="address" style="display: inline-block;">
                                     {{ $errors->first('address') }}
@@ -124,7 +124,7 @@ $errors->has('bank_account_no') || old('bank_account_no')
                             Bank</label>
                         <div class="col-sm-7">
                             <input name="bank_account_name" class="form-control input-sm" type="text"
-                                   value="{{ $propose->bank_account_name }}" {{$disabled}}>
+                                   value="{{ $propose_relation->propose->bank_account_name }}" {{$disabled}}>
                             @if($errors->has('bank_account_name'))
                                 <label class="error" for="bank_account_name" style="display: inline-block;">
                                     {{ $errors->first('bank_account_name') }}
@@ -138,7 +138,7 @@ $errors->has('bank_account_no') || old('bank_account_no')
                             Bank</label>
                         <div class="col-sm-7">
                             <input name="bank_account_no" class="form-control input-sm" type="text"
-                                   value="{{ $propose->bank_account_no }}" {{$disabled}}>
+                                   value="{{ $propose_relation->propose->bank_account_no }}" {{$disabled}}>
                             @if($errors->has('bank_account_no'))
                                 <label class="error" for="bank_account_no" style="display: inline-block;">
                                     {{ $errors->first('bank_account_no') }}

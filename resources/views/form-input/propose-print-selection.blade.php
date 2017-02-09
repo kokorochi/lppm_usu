@@ -1,13 +1,3 @@
-{{--Get Old Value And Place It To VARIABLE--}}
-{{--@if(--}}
-{{--$errors->has('file_partner_contract') || old('file_partner_contract')--}}
-{{--)--}}
-{{--@php--}}
-{{--$propose->file_partner_contract = old('file_partner_contract');--}}
-{{--@endphp--}}
-{{--@endif--}}
-{{--Get Old Value And Place It To VARIABLE--}}
-
 <div class="row">
     <div class="col-md-12">
         <div class="panel">

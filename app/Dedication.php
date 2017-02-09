@@ -56,4 +56,14 @@ class Dedication extends Model
     {
         return $this->hasMany(DedicationOutputRevision::class);
     }
+
+    public function dedicationOutputGeneral()
+    {
+        return $this->hasMany(DedicationOutputGeneral::class);
+    }
+
+    public function outputFlowStatus()
+    {
+        return $this->hasMany(OutputFlowStatus::class);
+    }
 }

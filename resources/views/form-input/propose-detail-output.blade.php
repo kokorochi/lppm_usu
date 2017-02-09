@@ -7,10 +7,10 @@
         $propose_output_type = new \App\ProposeOutputType();
         $propose_output_type->output_type_id = old('output_type.' . $ctr_old);
 
-        if($propose_output_types->get($ctr_old) === null){
-            $propose_output_types->add($propose_output_type);
+        if($propose_relation->propose_output_types->get($ctr_old) === null){
+            $propose_relation->propose_output_types->add($propose_output_type);
         }else{
-            $propose_output_types[$ctr_old] = $propose_output_type;
+            $propose_relation->propose_output_types[$ctr_old] = $propose_output_type;
         }
         $ctr_old++;
     }
@@ -32,13 +32,13 @@
             <div class="panel-body no-padding">
                 <div class="form-body form-horizontal form-bordered">
                     <div class="output-wrapper">
-                        @foreach($propose_output_types as $propose_output_type)
+                        @foreach($propose_relation->propose_output_types as $propose_output_type)
                             <div class="form-group">
                                 <label for="output_type" class="col-sm-4 col-md-3 control-label">Luaran yang
                                     dihasilkan</label>
                                 <div class="col-sm-7">
                                     <select name="output_type[]" class="form-control input-sm" {{$disabled}}>
-                                        @foreach($output_types as $output_type)
+                                        @foreach($propose_relation->output_types as $output_type)
                                             <option value="{{$output_type->id}}" {{$propose_output_type->output_type_id == $output_type->id ? 'selected' : null}}>{{$output_type->output_name}}</option>
                                         @endforeach
                                     </select>
