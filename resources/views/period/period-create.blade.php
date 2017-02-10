@@ -174,20 +174,20 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="score" class="col-sm-3 control-label">Skor Minimal</label>
-                                        <div class="col-sm-7">
-                                            <input name="score" class="form-control input-sm"
-                                                   maxlength="5"
-                                                   data-inputmask="'alias': 'decimal', 'rightAlign': false"
-                                                   type="text" value="{{$period->score}}">
-                                            @if($errors->has('score'))
-                                                <label class="error" for="score" style="display: inline-block;">
-                                                    {{ $errors->first('score') }}
-                                                </label>
-                                            @endif
-                                        </div>
-                                    </div>
+                                    {{--<div class="form-group">--}}
+                                        {{--<label for="score" class="col-sm-3 control-label">Skor Minimal</label>--}}
+                                        {{--<div class="col-sm-7">--}}
+                                            {{--<input name="score" class="form-control input-sm"--}}
+                                                   {{--maxlength="5"--}}
+                                                   {{--data-inputmask="'alias': 'decimal', 'rightAlign': false"--}}
+                                                   {{--type="text" value="{{$period->score}}">--}}
+                                            {{--@if($errors->has('score'))--}}
+                                                {{--<label class="error" for="score" style="display: inline-block;">--}}
+                                                    {{--{{ $errors->first('score') }}--}}
+                                                {{--</label>--}}
+                                            {{--@endif--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
 
                                     <div class="form-group">
                                         <label for="external" class="col-sm-3 control-label">Dosen Luar

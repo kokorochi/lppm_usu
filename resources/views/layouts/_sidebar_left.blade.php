@@ -15,7 +15,7 @@ START @SIDEBAR LEFT
     @if(Auth::user())
         <div class="sidebar-content">
             <div class="media">
-                <a class="pull-left has-notif avatar" href="{{url('page/profile')}}">
+                <a class="pull-left has-notif avatar" href="{{url('/')}}">
                     <img src="{{ $user_info->photo }}" alt="admin">
                     <i class="online"></i>
                 </a>

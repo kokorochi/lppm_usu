@@ -16,7 +16,7 @@ class UpdateNewFieldsPeriodTable extends Migration {
         {
             $table->double('total_amount', 15, 2);
             $table->boolean('allow_external');
-            $table->smallInteger('score', false, true);
+            $table->smallInteger('score', false, true)->nullable();
         });
     }
 

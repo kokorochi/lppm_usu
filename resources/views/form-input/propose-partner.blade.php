@@ -15,10 +15,10 @@ $errors->has('partner_distance.' . $ctr_old) || old('partner_distance.' . $ctr_o
         $dedication_partner['city'] = old('partner_city.' . $ctr_old);
         $dedication_partner['province'] = old('partner_province.' . $ctr_old);
         $dedication_partner['distance'] = old('partner_distance.' . $ctr_old);
-        if($dedication_partners->get($ctr_old) === null){
-            $dedication_partners->add($dedication_partner);
+        if($propose_relation->dedication_partners->get($ctr_old) === null){
+            $propose_relation->dedication_partners->add($dedication_partner);
         }else{
-            $dedication_partners[$ctr_old] = $dedication_partner;
+            $propose_relation->dedication_partners[$ctr_old] = $dedication_partner;
         }
         $ctr_old++;
     @endphp
@@ -41,7 +41,7 @@ $errors->has('partner_distance.' . $ctr_old) || old('partner_distance.' . $ctr_o
             <div class="panel-body no-padding">
                 <div class="form-body form-horizontal form-bordered">
                     <div class="partner-wrapper">
-                        @foreach($dedication_partners as $key => $dedication_partner)
+                        @foreach($propose_relation->dedication_partners as $key => $dedication_partner)
                             <div class="form-group">
                                 <label for="partner_name[]" class="col-sm-4 col-md-3 control-label">Nama Mitra</label>
                                 <div class="col-sm-7">

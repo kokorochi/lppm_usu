@@ -19,7 +19,7 @@
         {{--<link href="http://themes.djavaui.com/blankon-fullpack-admin-theme/img/ico/html/apple-touch-icon-114x114-precomposed.png" rel="apple-touch-icon-precomposed" sizes="114x114">--}}
         {{--<link href="http://themes.djavaui.com/blankon-fullpack-admin-theme/img/ico/html/apple-touch-icon-72x72-precomposed.png" rel="apple-touch-icon-precomposed" sizes="72x72">--}}
         {{--<link href="http://themes.djavaui.com/blankon-fullpack-admin-theme/img/ico/html/apple-touch-icon-57x57-precomposed.png" rel="apple-touch-icon-precomposed">--}}
-        <link href="{{$assetUrl}}/images/shortcut icon.png" rel="shortcut icon">
+        <link href="{{$assetUrl}}images/shortcut icon.png" rel="shortcut icon">
         <!--/ END FAVICONS -->
 
         <!-- START @FONT STYLES -->

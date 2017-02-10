@@ -1119,7 +1119,7 @@ class ProposeController extends BlankonController {
             $ret->propose_output_types->add(new ProposeOutputType());
             $ret->propose_output_types->add(new ProposeOutputType());
             $ret->dedication_partners = new Collection();
-            $ret->dedication_partner = add(new Dedication_partner());
+            $ret->dedication_partners->add(new Dedication_partner());
 
             $ret->lecturer = $this->getEmployee(Auth::user()->nidn);
 

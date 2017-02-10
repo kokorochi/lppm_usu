@@ -46,7 +46,7 @@ class StorePeriodRequest extends FormRequest {
             'last_begda'      => 'required|date',
             'last_endda'      => 'required|date',
             'total_amount'    => 'required',
-            'score'           => 'required',
+//            'score'           => 'required',
             'annotation'      => '',
         ];
     }
